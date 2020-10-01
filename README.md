@@ -6,7 +6,7 @@ Click [here](web/README.md) to see the rendered paper.
 
 ### How to contribute?
 
-The different sections of the paper are broken into parts under [parts](parts). To work on a section, edit individual markdown files in there. When you are done, execute the following script to recompile the final paper:
+The different sections of the paper are broken into parts under [parts](parts). To work on a section, edit individual markdown files in there. When you are done, **make sure to execute the following script to recompile the final paper** and commit:
 
 #### Compile
 
