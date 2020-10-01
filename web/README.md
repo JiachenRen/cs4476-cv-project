@@ -1,18 +1,22 @@
-## Manga Text Extraction & Translation
+# Manga Text Extraction & Translation
 
-[//]: # "abstract.md"
+#### Contributors
+
+Weiyao Tang, Zhaoran Ma, Jiachen Ren, Haoran Zhang, May Vy Le
+
 ### Abstract
 
+[//]: # "abstract.md"
 One or two sentences on the motivation behind the problem you are solving. One or two sentences describing the approach you took. One or two sentences on the main result you obtained.
 
-[//]: # "introduction.md"
 ### Introduction
 
+[//]: # "introduction.md"
 Manga have been around for over centuries and hundreds of mangas are printed everyday in Japan. However, manga has recently gained a rise of popularity and one of the reasons is due to the internet; manga are now digitized into web content and there are now many hosting websites where anyone can upload their web manga and users can read for free. However, most manga are written in Japanese or Korean, and to share manga to non-Japanese/Korean readers, a translation to English is needed. Yet, any translation work is time consuming labor since there is no automatic method to translate the writing in manga into any other language. The goal of this project is that by using image captioning, a user can input an image with manga in the original language to the system, utilizing text detection and identification model to get the manga inside it and the desired output is the manga with the text translated to English.
 
-[//]: # "approach.md"
 ### Approach
 
+[//]: # "approach.md"
 #### Steps
 
 1. Text Searching
@@ -27,9 +31,9 @@ Manga have been around for over centuries and hundreds of mangas are printed eve
 
    Using machine translation API to translate the text content extracted to English
 
-[//]: # "experiments-and-results.md"
 ### Experiments and Results
 
+[//]: # "experiments-and-results.md"
 #### Data Set
 
 For the text detection setp, we are going to utilize the image cropped from the websites. 

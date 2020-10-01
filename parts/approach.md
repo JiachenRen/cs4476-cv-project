@@ -1,5 +1,3 @@
-### Approach
-
 #### Steps
 
 1. Text Searching

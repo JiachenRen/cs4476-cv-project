@@ -1,5 +1,3 @@
-### Experiments and Results
-
 #### Data Set
 
 For the text detection setp, we are going to utilize the image cropped from the websites. 
