@@ -1,5 +1,7 @@
 # CS4476 CV Project Repo
 
+Project website can be found [here](https://jiachenren.github.io/cs4476-cv-project/).
+
 ### Where's the Paper?
 
 Click [here](web/README.md) to see the rendered paper.
