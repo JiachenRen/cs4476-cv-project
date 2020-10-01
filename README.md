@@ -18,3 +18,12 @@ chmod +x scripts/compile.py && scripts/compile.py
 #### Images
 
 To add images, put them under [images](images) directory. To link them from markdown, use the relative path. E.g. `[Alt Text](../images/<filename>)`
+
+#### How to add a new section?
+
+In [template.md](template.md), first add the line (order matters)
+
+```markdown
+[//]: # "section-name.md"
+```
+then, in [parts](parts), create the corresponding file `section-name.md`, edit the content of the section there.
