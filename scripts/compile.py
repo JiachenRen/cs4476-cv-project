@@ -3,15 +3,15 @@
 import os
 import re
 
-main_file = open('../template.md', 'r')
+main_file = open('template.md', 'r')
 readme_lines = main_file.read().split('\n')
 main_file.close()
 
-parts = os.listdir('../parts')
+parts = os.listdir('parts')
 
 for part in parts:
     print(f'> Compiling {part}')
-    f = open(f'../parts/{part}', 'r')
+    f = open(f'parts/{part}', 'r')
     part_md = f.read().split('\n')
     f.close()
     line_regex = re.compile(r'^\[\/\/\]:\s?#\s?"([^"]+)"$')
@@ -38,7 +38,7 @@ for line in readme_lines:
     # line = re.sub(r'\[([^\]]*)\]\(\.\.\/', r'[\1](', line)
     buffer += f'{line}\n'
 
-readme_file = open('../web/README.md', 'w')
+readme_file = open('web/README.md', 'w')
 readme_file.write(buffer)
 readme_file.close()
 
