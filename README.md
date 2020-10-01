@@ -1,27 +1,20 @@
-## Manga Text Extraction & Translation
+# CS4476 CV Project Repo
 
-### Abstract
+### Where's the Paper?
 
-One or two sentences on the motivation behind the problem you are solving. One or two sentences describing the approach you took. One or two sentences on the main result you obtained.
+Click [here](web/README.md) to see the rendered paper.
 
-### Introduction
+### How to contribute?
 
-Manga have been around for over centuries and hundreds of mangas are printed everyday in Japan. However, manga has recently gained a rise of popularity and one of the reasons is due to the internet; manga are now digitized into web content and there are now many hosting websites where anyone can upload their web manga and users can read for free. However, most manga are written in Japanese or Korean, and to share manga to non-Japanese/Korean readers, a translation to English is needed. Yet, any translation work is time consuming labor since there is no automatic method to translate the writing in manga into any other language. The goal of this project is that by using image captioning, a user can input an image with manga in the original language to the system, utilizing text detection and identification model to get the manga inside it and the desired output is the manga with the text translated to English.
+The different sections of the paper are broken into parts under [parts](parts). To work on a section, edit individual markdown files in there. When you are done, execute the following script to recompile the final paper:
 
-### Approach
+#### Compile
 
-#### Steps
+Make sure you are under the project directory, and have `python3`
+```shell script
+chmod +x scripts/compile.py && scripts/compile.py
+```
 
-1. Text Searching
+#### Images
 
-   Using Mask R-CNN, we can detect where the text is located in the image and extract these characters for next step.
-
-2. Token/Character Identification
-
-   Applying OCR to text tokens and extract individual Japanese characters in sequence from those images
-
-3. Inserting Text Back to Image
-
-   Using machine translation API to translate the text content extracted to English
-   
-Todo: generate
+To add images, put them under [images](images) directory. To link them from markdown, use the relative path. E.g. `[Alt Text](../images/<filename>)`
