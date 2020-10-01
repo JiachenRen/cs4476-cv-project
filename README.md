@@ -11,6 +11,7 @@ The different sections of the paper are broken into parts under [parts](parts). 
 #### Compile
 
 Make sure you are under the project directory, and have `python3`
+
 ```shell script
 chmod +x scripts/compile.py && scripts/compile.py
 ```
@@ -26,4 +27,5 @@ In [template.md](template.md), first add the line (order matters)
 ```markdown
 [//]: # "section-name.md"
 ```
+
 then, in [parts](parts), create the corresponding file `section-name.md`, edit the content of the section there.
