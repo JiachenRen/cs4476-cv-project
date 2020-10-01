@@ -12,7 +12,7 @@ The different sections of the paper are broken into parts under [parts](parts). 
 
 Make sure you are under the project directory, and have `python3`
 
-```shell script
+```shell
 chmod +x scripts/compile.py && scripts/compile.py
 ```
 
