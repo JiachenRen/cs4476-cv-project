@@ -7,7 +7,9 @@ Weiyao Tang, Zhaoran Ma, Jiachen Ren, Haoran Zhang, May Vy Le
 ### Abstract
 
 [//]: # "abstract.md"
-One or two sentences on the motivation behind the problem you are solving. One or two sentences describing the approach you took. One or two sentences on the main result you obtained.
+In this project, we aim to make the lives of manga translators easier by designing a system that takes in a manga image as input, extracts speech bubbles, then uses online translation API to translate the texts (originally in Japanese), finally producing a new image with translated speech bubbles as output.
+
+// Todo: a few sentences about approach taken, results 
 
 ### Introduction
 
@@ -49,7 +51,7 @@ Manga have been around for over centuries and hundreds of mangas are printed eve
    Using [Google Translate API](https://cloud.google.com/translate/docs), we translate the japanese characters into target language.
    (In our case, target language is English) This part does not have too much to do with computer vision.
 
-4. Inserting Text Back to Image
+4. **Inserting Text Back to Image**
 
    After the translation is done, we will use the information about where the speech bubbles are located, their respective
    bounding rectangle, the size of the original text characters, and the original spacing to calculate the size, format, and position of
@@ -60,14 +62,17 @@ Manga have been around for over centuries and hundreds of mangas are printed eve
 [//]: # "experiments-and-results.md"
 #### Data Set
 
-For the text detection setp, we are going to utilize the image cropped from the websites. 
+To carry out this project, we need datasets of manga images to perform experiments on. However, despite our efforts, we couldn't locate any existing manga datasets in Japanese. What we do have at hand is a dataset of images already translated to English (for one of our member's NLP project). These images are collected using a web-crawler (written in dart) from this [website](https://mangasee123.com), and is purely used for research purposes. The crawler can be easily extended to collect raw manga resources from legitimate Japanese websites, and we intend to do that. 
 
-For the text recognition step, the data set used was taken from a Github repository, which contained 50 different characters and 20 different samples for each one. While sample size is small, a considerable level of certainty can be obtained utilizing a good learning model.
+However, if said resource is not attainable due to various reasons, we might change our objective to "translating from english to other languages." This is not too different from our current objective, since english texts in manga are in most cases **capitalized**, so we can easily employ hough transform for each letter or existing OCR methods to extract english texts, simplifying the problem statement.
 
+It's unlikely that we'll train our own neural model for OCR, so we'll probably use pretrained models mentioned below.
 
-#### Experimental Steps
+#### List of Experiments
 
-When documents are clearly laid out and have global structure (for example, a business letter), existing tools for OCR can perform quite well. In Manga, first, the document of interest occurs alongside some background objects . Second, the text within the document is highly unstructured and therefore it is beneficial to separately identify all the possible text blocks. Inspired by fully convolutional networks, we came up with the idea of modifying the model MaskRCNN as an effective approach for text location, which is consisted of two steps. 
+##### 1. Using Mask R-CNN to detect text boundaries
+
+When documents are clearly laid out and have global structure (for example, a business letter), existing tools for OCR can perform quite well. In Manga, first, the document of interest occurs alongside some background objects . Second, the text within the document is highly unstructured and therefore it is beneficial to separately identify all the possible text blocks. Inspired by fully convolutional networks, we came up with the idea of modifying the model Mask R-CNN as an effective approach for text location, which is consisted of two steps. 
 
 First, CNN is adopted to detect text blocks, from which character candidates are extracted. Then FPN is used to predict the corresponding segmentation masks. Last, segmentation mask is used to ﬁnd suitable rectangular bounding boxes for the text instances. The model generates bounding boxes and segmentation masks for each instance of an object in the image.
 
@@ -77,9 +82,26 @@ For the token/character identification, we plan to identify the Japanese charact
 
 ![Manga2](../images/manga3.png)
 
+##### 2. Using Hough Transform and Canny Edge Detection to find speech bubbles and text.
+
+Another experiment that we will carry out as an alternative to Mask R-CNN is to use hough transform and canny edge detection to locate text in manga and extract speech bubble bounding rectangles. We will compare how each of these methods performed (or, in reality, feasible), and select one for our implementation.
+
+In addition to simply extracting bounding box for speech bubbles, we will experiment with a novel idea of identifying exact boundaries of speech bubbles (which can help with in-painting boundaries later). It works like so - 
+
+- First, individual text characters are detected, potentially using hough transform.
+- Using **kmeans** or **mean-shift**, we detect text cluster centers, which are likely to be the center to speech bubbles (see images above for an example). 
+- Then, hypothesize a bubble boundary by drawing a body that encompasses all text characters in each cluster. Then, using the "snake" algorithm, facilitated by the gradient of the speech bubble's boundary, we can assume the exact shape of the speech bubble.
+
 #### Expected Outcomes
 
-We expect for each mango image input, after applying our model, we could gain the text content from it and translated into English. We are uncertain about the accuracy of the model that we are going to apply to train Japanese characters due to its structure. 
+Ideally, our end system should be able to perform the following
+
+1. Extract & locate text in manga
+2. Locate speech bubbles in manga
+3. Using OCR, convert text in image to ASCII
+4. Translate the text, then using original position, size, and spacing information, in-paint the translated text into their corresponding speech bubbles in the new manga.
+
+We realize that there are still uncertainties in our setup and also expectation, but we will try our best.
 
 
 
