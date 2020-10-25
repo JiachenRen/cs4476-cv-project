@@ -2,7 +2,7 @@
 # Created October 24, Jiachen Ren, ported from dart
 # Source: https://github.com/gabrielpacheco23/google-translator/blob/master/lib/src/tokens/google_token_gen.dart
 
-def _unsignedRightShift(a, b):
+def _unsigned_right_shift(a, b):
     if b >= 32 or b < -32:
         m = int(b / 32)
         b = b - (m * 32)
@@ -30,9 +30,9 @@ def _TKK():
 def _wr(a, b):
     try:
         for c in range(0, len(str(b)) - 2, 3):
-            d = b[c + 2];
+            d = b[c + 2]
             d = ord(str(d[0])) - 87 if ord('a') <= ord(str(d)[0]) else int(d)
-            d = _unsignedRightShift(a, d) if '+' == b[c + 1] else a << d
+            d = _unsigned_right_shift(a, d) if '+' == b[c + 1] else a << d
             a = (a + int(d) & 4294967295) if '+' == b[c] else a ^ d
         return a
     except Exception as e:
@@ -40,7 +40,7 @@ def _wr(a, b):
         return None
 
 
-def _tokenGen(a: str):
+def _token_gen(a: str):
     tkk = _TKK()
     b = tkk[0]
     d = []
@@ -77,8 +77,8 @@ def _tokenGen(a: str):
     return str(a) + '.' + str(a ^ int(b))
 
 
-def generateToken(text: str):
-    return _tokenGen(text)
+def generate_token(text: str):
+    return _token_gen(text)
 
 
 

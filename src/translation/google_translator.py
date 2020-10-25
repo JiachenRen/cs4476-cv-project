@@ -4,7 +4,7 @@ from urllib.request import Request, urlopen
 from http.client import HTTPResponse
 from json import loads
 
-from src.translation.google_token_generator import generateToken
+from src.translation.google_token_generator import generate_token
 
 
 class ClientType(Enum):
@@ -13,11 +13,11 @@ class ClientType(Enum):
 
 
 class Translation:
-    def __init__(self, source, translated, srcLang, destLang):
+    def __init__(self, source, translated, src_lang, dest_lang):
         self.source = source
         self.translated = translated
-        self.srcLang = srcLang
-        self.destLang = destLang
+        self.src_lang = src_lang
+        self.dest_lang = dest_lang
 
 
 class GoogleTranslator:
@@ -133,17 +133,17 @@ class GoogleTranslator:
         'zu': 'Zulu'
     }
 
-    def __init__(self, clientType: ClientType = ClientType.siteGT):
+    def __init__(self, client_type: ClientType = ClientType.siteGT):
         self._baseUrl = 'translate.googleapis.com'
         self._path = '/translate_a/single'
-        self._clientType = clientType
+        self._client_type = client_type
 
-    def translate(self, sourceText: str, srcLang='auto', destLang='en'):
+    def translate(self, src_text: str, src_lang='auto', dest_lang='en'):
         parameters = {
-            'client': self._clientType.name,
-            'sl': srcLang,
-            'tl': destLang,
-            'hl': destLang,
+            'client': self._client_type.name,
+            'sl': src_lang,
+            'tl': dest_lang,
+            'hl': dest_lang,
             'dt': 't',
             'ie': 'UTF-8',
             'oe': 'UTF-8',
@@ -151,8 +151,8 @@ class GoogleTranslator:
             'ssel': '0',
             'tsel': '0',
             'kc': '7',
-            'tk': generateToken(sourceText),
-            'q': sourceText
+            'tk': generate_token(src_text),
+            'q': src_text
         }
 
         url = f'https://{self._baseUrl}{self._path}?{parse.urlencode(parameters)}'
@@ -166,9 +166,9 @@ class GoogleTranslator:
             translated = ''
             for i in range(len(json[0])):
                 translated += json[0][i][0]
-            if srcLang == 'auto' and srcLang != destLang:
+            if src_lang == 'auto' and src_lang != dest_lang:
                 if json[2] is not None:
-                    srcLang = json[2]
-                if srcLang == destLang:
-                    srcLang = 'auto'
-            return Translation(sourceText, translated, srcLang, destLang)
+                    src_lang = json[2]
+                if src_lang == dest_lang:
+                    src_lang = 'auto'
+            return Translation(src_text, translated, src_lang, dest_lang)

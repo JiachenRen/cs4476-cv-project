@@ -2,6 +2,8 @@ from PIL import Image
 from typing import List
 import pytesseract
 
+from src.ocr.geometry import Rect
+
 
 class TextBlockInfo:
 
@@ -13,24 +15,20 @@ class TextBlockInfo:
         self.par_num = int(par_num)
         self.line_num = int(line_num)
         self.word_num = int(word_num)
-        self.left = int(left)
-        self.top = int(top)
-        self.width = int(width)
-        self.height = int(height)
+        self.bounds = Rect(int(left), int(top), int(width), int(height))
         self.confidence = int(conf)
-        self.text = text
+        self.text = text.strip()  # Remove white spaces
 
     def __str__(self):
         return f'''>>> TextBlockInfo
       par.line.word: par. {self.par_num}, line {self.line_num}, word {self.word_num}
          confidence: {self.confidence}%
-        (left, top): ({self.left}, {self.top})
-    (width, height): ({self.width}, {self.height})
+             bounds: {self.bounds}
                text: "{self.text}"
 '''
 
 
-def parseBlocksFromImage(image: Image) -> List[TextBlockInfo]:
+def parse_blocks_from_image(image: Image.Image) -> List[TextBlockInfo]:
     data = pytesseract.image_to_data(image).split('\n')
     # Remove data header
     data.pop(0)

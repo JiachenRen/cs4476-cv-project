@@ -1,21 +1,31 @@
 from PIL import Image, ImageDraw
-from src.ocr.TextBlockInfo import parseBlocksFromImage, TextBlockInfo
+from src.ocr.TextBlockInfo import parse_blocks_from_image, TextBlockInfo
+from src.ocr.iterative_ocr import iterative_ocr
 from typing import List
-import pytesseract
 
-test_img: Image.Image = Image.open('../data/indonesian/sektekomik.com/slime/15.png')
+max_block_height = 100
+imageUri = '../data/indonesian/sektekomik.com/demon_king/1.png'
+test_img: Image.Image = Image.open(imageUri)
 
-
-blocks: List[TextBlockInfo] = parseBlocksFromImage(test_img)
+# Test baseline OCR (using google's Tesseract OCR)
+blocks: List[TextBlockInfo] = parse_blocks_from_image(test_img)
+print(f'Baseline OCR (found {len(blocks)} blocks) ------------------------------')
 for block in blocks:
     print(block)
 
-draw = ImageDraw.Draw(test_img, mode='RGBA')
+test_img_highlighted = test_img.copy()
+draw = ImageDraw.Draw(test_img_highlighted, mode='RGBA')
 for block in blocks:
-    if block.height > 100:
+    if block.bounds.height() > max_block_height:
         # Ignore bounding boxes whose height is greater than 100
         continue
-    draw.rectangle([(block.left, block.top), (block.left + block.width, block.top + block.height)], fill=(255, 0, 0, 80))
+    draw.rectangle(block.bounds.corners(), fill=(255, 0, 0, 80))
 
-# Save image with text bounding box to gen/image_text_boxes_unguided.png
-test_img.save('../gen/image_text_boxes.png', 'PNG')
+# Save image with text bounding box to gen/image_ocr_baseline.png
+test_img_highlighted.save('../gen/image_ocr_baseline.png', 'PNG')
+
+# Test iterative OCR
+masked_image, highlighted_image, blocks = iterative_ocr(imageUri, max_iterations=3, max_block_height=max_block_height)
+print(f'Iterative OCR (found {len(blocks)} blocks) ------------------------------')
+for block in blocks:
+    print(block)
