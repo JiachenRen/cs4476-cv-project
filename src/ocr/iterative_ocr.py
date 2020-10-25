@@ -1,10 +1,15 @@
 from PIL import Image, ImageDraw
 from typing import List, Tuple
+from src.ocr.utils import highlight_blocks_on_image
+import numpy as np
+import os
+import shutil
+import os.path as p
 
 from src.ocr.TextBlockInfo import parse_blocks_from_image, TextBlockInfo
 
 
-def iterative_ocr(imageUri: str, max_iterations=5, max_block_height=100) \
+def iterative_ocr(image: Image.Image, max_iterations=5, iterative_ocr_path='../gen/iterative_ocr') \
         -> Tuple[Image.Image, Image.Image, List[TextBlockInfo]]:
     """
     The baseline Tesseract OCR isn't designed for detecting texts in manga.
@@ -15,28 +20,30 @@ def iterative_ocr(imageUri: str, max_iterations=5, max_block_height=100) \
     The algorithm stops after a specified number of iterations, or if no blocks are found after an iteration.
     See ../gen/iterative_ocr/ for results after each iteration.
 
-    :param imageUri: URI of the image
+    :param image: input image
     :param max_iterations: iterations to run
-    :param max_block_height: max block height for text blocks
+    :param iterative_ocr_path: path to store iterative OCR intermediaries
     :return: (im_masked, im_highlighted, text_blocks), where im_masked has
              all detected texts masked, im_highlighted has all detected texts highlighted
     """
-    masked_image = Image.open(imageUri)
-    highlighted_image = Image.open(imageUri)
-    draw_on_masked = ImageDraw.Draw(masked_image)
-    draw_on_highlighted = ImageDraw.Draw(highlighted_image, mode='RGBA')
+    # noinspection PyTypeChecker
+    masked_image = Image.fromarray(np.array(image))
+    # noinspection PyTypeChecker
+    highlighted_image = Image.fromarray(np.array(image))
     blocks: List[TextBlockInfo] = []
+    if p.exists(iterative_ocr_path):
+        shutil.rmtree(iterative_ocr_path)
+    os.mkdir(iterative_ocr_path)
     for i in range(max_iterations):
         print(f'> Iteration {i + 1}')
         new_blocks = parse_blocks_from_image(masked_image)
         if len(new_blocks) == 0:
             print('> No text detected, stopping.')
             break
-        for block in new_blocks:
-            if block.bounds.height() < max_block_height:
-                # Mask recognized text blocks
-                draw_on_masked.rectangle(block.bounds.corners(), fill=(255, 255, 255))
-                draw_on_highlighted.rectangle(block.bounds.corners(), fill=(255, 0, 0, 80))
+        # Mask recognized text blocks
+        masked_image = highlight_blocks_on_image(masked_image, new_blocks, fill=(255, 255, 255), alpha=255)
+        # Highlight detected text blocks in red
+        highlighted_image = highlight_blocks_on_image(highlighted_image, new_blocks)
         print(f'\tfound {len(new_blocks)} new text blocks')
         highlighted_image.save(f'../gen/iterative_ocr/iteration_{i + 1}_highlighted.png')
         masked_image.save(f'../gen/iterative_ocr/iteration_{i + 1}_masked.png')

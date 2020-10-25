@@ -1,3 +1,5 @@
 .idea/
 .DS_Store
 venv/
+src/gen/
+*/**/__pycache__/

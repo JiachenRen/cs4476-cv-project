@@ -28,7 +28,14 @@ class TextBlockInfo:
 '''
 
 
-def parse_blocks_from_image(image: Image.Image) -> List[TextBlockInfo]:
+def parse_blocks_from_image(image: Image.Image, max_block_height=100, min_confidence: int = None) \
+        -> List[TextBlockInfo]:
+    """
+    :param max_block_height: max text block height, above which text blocks are discarded
+    :param image: image to detect text blocks from
+    :param min_confidence: min confidence to include block
+    :return: list of text blocks extracted from image
+    """
     data = pytesseract.image_to_data(image).split('\n')
     # Remove data header
     data.pop(0)
@@ -38,7 +45,9 @@ def parse_blocks_from_image(image: Image.Image) -> List[TextBlockInfo]:
             continue
         elements = line.split('\t')
         block = TextBlockInfo(*elements)
-        if block.confidence != -1 and len(block.text) != 0:
-            # Discard empty blocks
-            blocks.append(block)
+        if block.confidence != -1 and len(block.text) != 0 \
+                and block.bounds.height() <= max_block_height:
+            # Discard empty blocks / blocks with low confidence
+            if min_confidence is None or block.confidence >= min_confidence:
+                blocks.append(block)
     return blocks

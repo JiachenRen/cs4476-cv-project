@@ -1,31 +1,67 @@
-from PIL import Image, ImageDraw
+from PIL import Image
 from src.ocr.TextBlockInfo import parse_blocks_from_image, TextBlockInfo
 from src.ocr.iterative_ocr import iterative_ocr
-from typing import List
+from src.ocr.utils import highlight_blocks_on_image, preprocess
+from typing import List, Tuple
+import numpy as np
+import imageio
+
+from src.ocr.sift_ocr import sift_ocr
 
 max_block_height = 100
-imageUri = '../data/indonesian/sektekomik.com/demon_king/1.png'
-test_img: Image.Image = Image.open(imageUri)
+image_uri = '../data/indonesian/sektekomik.com/demon_king/1.png'
 
-# Test baseline OCR (using google's Tesseract OCR)
-blocks: List[TextBlockInfo] = parse_blocks_from_image(test_img)
-print(f'Baseline OCR (found {len(blocks)} blocks) ------------------------------')
-for block in blocks:
-    print(block)
 
-test_img_highlighted = test_img.copy()
-draw = ImageDraw.Draw(test_img_highlighted, mode='RGBA')
-for block in blocks:
-    if block.bounds.height() > max_block_height:
-        # Ignore bounding boxes whose height is greater than 100
-        continue
-    draw.rectangle(block.bounds.corners(), fill=(255, 0, 0, 80))
+def load_test_image() -> Tuple[np.ndarray, Image.Image]:
+    np_image = imageio.imread(image_uri)
+    np_image = preprocess(np_image)
+    return np_image, Image.fromarray(np_image)
 
-# Save image with text bounding box to gen/image_ocr_baseline.png
-test_img_highlighted.save('../gen/image_ocr_baseline.png', 'PNG')
 
-# Test iterative OCR
-masked_image, highlighted_image, blocks = iterative_ocr(imageUri, max_iterations=3, max_block_height=max_block_height)
-print(f'Iterative OCR (found {len(blocks)} blocks) ------------------------------')
-for block in blocks:
-    print(block)
+def test_baseline_ocr():
+    # Test baseline OCR (using google's Tesseract OCR)
+    test_img: Image.Image = Image.open(image_uri)
+    blocks: List[TextBlockInfo] = parse_blocks_from_image(test_img)
+    print(f'Baseline OCR (found {len(blocks)} blocks) ------------------------------')
+    for block in blocks:
+        print(block)
+
+    highlighted = highlight_blocks_on_image(test_img, blocks)
+
+    # Save image with text bounding box to gen/image_ocr_baseline.png
+    highlighted.save('../gen/ocr_baseline.png')
+
+
+def test_preprocessed_ocr():
+    """
+    Same as base line OCR, but applies a preprocessing procedure first (denoise, threshold)
+    """
+    np_image, pil_image = load_test_image()
+
+    blocks: List[TextBlockInfo] = parse_blocks_from_image(pil_image)
+    print(f'Preprocessed OCR (found {len(blocks)} blocks) ------------------------------')
+    for block in blocks:
+        print(block)
+
+    highlighted = highlight_blocks_on_image(pil_image, blocks)
+
+    # Save image with text bounding box to gen/image_ocr_baseline.png
+    highlighted.save('../gen/ocr_preprocessed.png')
+
+
+def test_iterative_ocr():
+    # Test iterative OCR, with preprocessing applied
+    np_image, pil_image = load_test_image()
+    masked_image, highlighted_image, blocks = iterative_ocr(pil_image, max_iterations=5)
+    print(f'Iterative OCR (found {len(blocks)} blocks) ------------------------------')
+    for block in blocks:
+        print(block)
+
+
+def test_sift_ocr():
+    np_image, pil_image = load_test_image()
+    sift_ocr(pil_image)
+
+
+if __name__ == '__main__':
+    test_sift_ocr()

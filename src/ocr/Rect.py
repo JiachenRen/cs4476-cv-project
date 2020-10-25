@@ -18,6 +18,9 @@ class Rect:
     def corners(self):
         return [self.origin, self.diagonal]
 
+    def box(self):
+        return self.origin[0], self.origin[1], self.diagonal[0], self.diagonal[1]
+
     def __str__(self):
         return f'Rect(origin: {self.origin}, diagonal: {self.diagonal})'
 
