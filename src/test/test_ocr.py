@@ -8,8 +8,7 @@ import imageio
 
 from src.ocr.sift_ocr import sift_ocr
 
-max_block_height = 100
-image_uri = '../data/indonesian/sektekomik.com/demon_king/1.png'
+image_uri = '../data/indonesian/sektekomik.com/demon_king/2.png'
 
 
 def load_test_image() -> Tuple[np.ndarray, Image.Image]:
@@ -64,4 +63,7 @@ def test_sift_ocr():
 
 
 if __name__ == '__main__':
+    # test_baseline_ocr()
+    # test_preprocessed_ocr()
+    # test_iterative_ocr()
     test_sift_ocr()
