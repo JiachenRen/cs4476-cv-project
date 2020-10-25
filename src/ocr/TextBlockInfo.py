@@ -2,7 +2,7 @@ from PIL import Image
 from typing import List
 import pytesseract
 
-from src.ocr.geometry import Rect
+from src.ocr.Rect import Rect
 
 
 class TextBlockInfo:
