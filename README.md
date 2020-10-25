@@ -31,3 +31,25 @@ In [template.md](template.md), first add the line (order matters)
 ```
 
 then, in [parts](parts), create the corresponding file `section-name.md`, edit the content of the section there.
+
+## Project Dependencies & Installation Guide
+
+### Install Tesseract OCR
+
+This project makes use of google's [Tesseract OCR](https://github.com/tesseract-ocr/tesseract) for text recognition. In order
+for the system to successfully, run, please install command line tool `tesseract` and add it to path. For macos, just run
+
+```shell
+brew install tesseract
+```
+
+For other systems, refer to [this guide](https://tesseract-ocr.github.io/tessdoc/Home.html). When you install
+tesseract, you might encounter some non-fatal errors, just ignore them. You'll be fine as long as you have the final binary.
+
+#### Install Tesseract python package
+
+In the project directory (assuming that you have your venv created), run
+
+```shell
+pip3 install pytesseract
+``` 
