@@ -14,8 +14,8 @@ import cv2 as cv
 
 
 def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../gen/sift_ocr', morph_rect_size=40,
-             min_cluster_label_count=2, sift_match_threshold=0.7, mask_size=50, max_flood_err=(5, 5, 5)) \
-        -> List[TextBlockInfo]:
+             mean_shift_bandwidth=80, min_cluster_label_count=2, sift_match_threshold=0.7,
+             mask_size=50, max_flood_err=(5, 5, 5)) -> List[TextBlockInfo]:
     """
     To overcome blind spots of Tesseract OCR, we developed SIFT feature guided image OCR.
 
@@ -44,6 +44,7 @@ def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../
     :param morph_rect_size: size of the structuring element used to fill characters in text balloons
     :param max_flood_err: max allowed flood error in (R, G, B) when flooding speech bubbles
     :param sift_ocr_path: path to store sift_ocr intermediaries
+    :param mean_shift_bandwidth: bandwidth for mean shift clustering of matched keypoints from input image
     :return:
     """
     _, _, blocks = iterative_ocr(image, parser)
@@ -107,7 +108,7 @@ def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../
         poi[idx, :] = np.array([x, y])
 
     print('> Finding match cluster centers')
-    mean_shift = MeanShift(cluster_all=False, bandwidth=80)
+    mean_shift = MeanShift(cluster_all=False, bandwidth=mean_shift_bandwidth)
     mean_shift.fit(poi)
     centers = mean_shift.cluster_centers_
     poi_labels = mean_shift.predict(poi)
@@ -142,7 +143,7 @@ def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../
     # noinspection PyTypeChecker
     input_image_arr = np.array(image)
     # Structuring element to close text gaps in speech bubbles
-    struct_element = cv.getStructuringElement(cv.MORPH_RECT, (40, 40))
+    struct_element = cv.getStructuringElement(cv.MORPH_RECT, (morph_rect_size, morph_rect_size))
     for idx, c in enumerate(centers):
         print(f'> Hypothesizing bounding box from center {idx + 1}, {c}')
         flood_image = image.convert('RGB')
