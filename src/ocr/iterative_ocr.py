@@ -1,4 +1,4 @@
-from PIL import Image, ImageDraw
+from PIL import Image
 from typing import List, Tuple
 from src.ocr.utils import draw_blocks_on_image
 import numpy as np
@@ -6,11 +6,11 @@ import os
 import shutil
 import os.path as p
 
-from src.ocr.TextBlockInfo import parse_blocks_from_image, TextBlockInfo
+from src.ocr.TextBlockInfo import TextBlockInfoParser, TextBlockInfo
 
 
-def iterative_ocr(image: Image.Image, max_iterations=5, iterative_ocr_path='../gen/iterative_ocr') \
-        -> Tuple[Image.Image, Image.Image, List[TextBlockInfo]]:
+def iterative_ocr(image: Image.Image, parser: TextBlockInfoParser, max_iterations=5,
+                  iterative_ocr_path='../gen/iterative_ocr') -> Tuple[Image.Image, Image.Image, List[TextBlockInfo]]:
     """
     The baseline Tesseract OCR isn't designed for detecting texts in manga.
     See ../gen/image_ocr_baseline.png.
@@ -21,6 +21,7 @@ def iterative_ocr(image: Image.Image, max_iterations=5, iterative_ocr_path='../g
     See ../gen/iterative_ocr/ for results after each iteration.
 
     :param image: input image
+    :param parser: TextBlockInfo parser to use
     :param max_iterations: iterations to run
     :param iterative_ocr_path: path to store iterative OCR intermediaries
     :return: (im_masked, im_highlighted, text_blocks), where im_masked has
@@ -36,7 +37,7 @@ def iterative_ocr(image: Image.Image, max_iterations=5, iterative_ocr_path='../g
     os.mkdir(iterative_ocr_path)
     for i in range(max_iterations):
         print(f'> Iteration {i + 1}')
-        new_blocks = parse_blocks_from_image(masked_image)
+        new_blocks = parser.parse_blocks_from_image(masked_image)
         if len(new_blocks) == 0:
             print('> No text detected, stopping.')
             break
@@ -49,7 +50,3 @@ def iterative_ocr(image: Image.Image, max_iterations=5, iterative_ocr_path='../g
         masked_image.save(p.join(iterative_ocr_path, f'iteration_{i + 1}_masked.png'))
         blocks += new_blocks
     return masked_image, highlighted_image, blocks
-
-
-
-

@@ -2,28 +2,32 @@ from typing import Tuple
 
 
 class Rect:
-    origin: Tuple[int, int]
-    diagonal: Tuple[int, int]
 
     def __init__(self, x, y, w, h):
-        self.origin = (x, y)
-        self.diagonal = (x + w, y + h)
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
 
-    def width(self):
-        return self.diagonal[0] - self.origin[0]
+    def origin(self):
+        return self.x, self.y
 
-    def height(self):
-        return self.diagonal[1] - self.origin[1]
+    def diagonal(self):
+        return self.x + self.w, self.y + self.h
 
     def corners(self):
-        return [self.origin, self.diagonal]
+        return [self.origin(), self.diagonal()]
 
     def area(self):
-        return self.width() * self.height()
+        return self.w * self.h
+
+    def translate(self, delta):
+        self.x += delta[0]
+        self.y += delta[1]
 
     def box(self):
-        return self.origin[0], self.origin[1], self.diagonal[0], self.diagonal[1]
+        return self.origin()[0], self.origin()[1], self.diagonal()[0], self.diagonal()[1]
 
     def __str__(self):
-        return f'Rect(origin: {self.origin}, diagonal: {self.diagonal})'
+        return f'Rect(origin: {self.origin()}, diagonal: {self.diagonal()})'
 
