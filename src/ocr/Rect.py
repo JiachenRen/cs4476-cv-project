@@ -18,6 +18,9 @@ class Rect:
     def corners(self):
         return [self.origin, self.diagonal]
 
+    def area(self):
+        return self.width() * self.height()
+
     def box(self):
         return self.origin[0], self.origin[1], self.diagonal[0], self.diagonal[1]
 

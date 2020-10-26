@@ -36,5 +36,5 @@ def preprocess(image: np.ndarray) -> np.ndarray:
     """
     image = cv2.fastNlMeansDenoisingColored(image, None, 10, 10, 7, 21)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    res, image = cv2.threshold(image, 150, 255, cv2.THRESH_BINARY)
+    # res, image = cv2.threshold(image, 150, 255, cv2.THRESH_BINARY)
     return image

@@ -8,7 +8,7 @@ import imageio
 
 from src.ocr.sift_ocr import sift_ocr
 
-image_uri = '../data/indonesian/sektekomik.com/slime/7.png'
+image_uri = '../data/indonesian/sektekomik.com/demon_king/3.png'
 
 
 def load_test_image() -> Tuple[np.ndarray, Image.Image]:
