@@ -2,6 +2,7 @@ from PIL import Image, ImageDraw
 from src.ocr.Rect import Rect
 from src.ocr.iterative_ocr import iterative_ocr
 from src.ocr.TextBlockInfo import TextBlockInfo, TextBlockInfoParser
+from src.ocr.utils import draw_blocks_on_image
 from typing import List, Tuple
 from sklearn.cluster import MeanShift, KMeans
 from collections import Counter
@@ -12,7 +13,7 @@ import numpy as np
 import cv2 as cv
 
 
-def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../gen/sift_ocr',
+def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../gen/sift_ocr', morph_rect_size=40,
              min_cluster_label_count=2, sift_match_threshold=0.7, mask_size=50, max_flood_err=(5, 5, 5)) \
         -> List[TextBlockInfo]:
     """
@@ -28,9 +29,11 @@ def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../
     ✓ Use MeanShift to cluster keypoints of matched descriptors to hypothesize text box centers
     ✓ Mask image at centers
     ✓ Flood fill (opencv) using centers as starting points
-    - Run boundary detection on flooded areas to extract boundary
-    - Extract bounding box from boundary (opencv)
-    - Use these new bounding boxes to crop input image,
+    ✓ Using opencv, morph the bubbles to cover the texts within
+    ✓ Use the bubble as a binary mask to mask irrelevant parts of input image
+    ✓ Run boundary detection on bubbles to extract boundary
+    ✓ Extract bounding box from boundary (opencv)
+    ✓ Use these new bounding boxes to crop the masked input image,
       then run Tesseract OCR over each to extract more text.
 
     :param image: input image
@@ -38,6 +41,7 @@ def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../
     :param min_cluster_label_count: min number of points labelled for a cluster to keep it
     :param sift_match_threshold: threshold to keep sift matches, between 0-1, (smaller value = stricter match)
     :param mask_size: size of the mask to use at cluster centers
+    :param morph_rect_size: size of the structuring element used to fill characters in text balloons
     :param max_flood_err: max allowed flood error in (R, G, B) when flooding speech bubbles
     :param sift_ocr_path: path to store sift_ocr intermediaries
     :return:
@@ -138,7 +142,7 @@ def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../
     # noinspection PyTypeChecker
     input_image_arr = np.array(image)
     # Structuring element to close text gaps in speech bubbles
-    struct_element = cv.getStructuringElement(cv.MORPH_RECT, (50, 50))
+    struct_element = cv.getStructuringElement(cv.MORPH_RECT, (40, 40))
     for idx, c in enumerate(centers):
         print(f'> Hypothesizing bounding box from center {idx + 1}, {c}')
         flood_image = image.convert('RGB')
@@ -185,11 +189,13 @@ def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../
         flood_mask_bounds = Rect(*cv.boundingRect(flood_mask_contours[0]))
         masked_image = Image.fromarray(masked_image).crop(flood_mask_bounds.box())
 
-        # Save mask and masked image
+        # Run detection, save mask and masked image (with new detections drawn over)
         cv.imwrite(p.join(sift_ocr_path, 'masks', f'{idx + 1}.png'), flood_mask)
+        new_blocks: List[TextBlockInfo] = parser.parse_blocks_from_image(masked_image)
+        masked_image = draw_blocks_on_image(masked_image, new_blocks)
         masked_image.save(p.join(sift_ocr_path, 'masked', f'{idx + 1}.png'))
 
-        new_blocks: List[TextBlockInfo] = parser.parse_blocks_from_image(masked_image)
+        # Translate block coordinates from masked image to input image
         for block in new_blocks:
             block.bounds.translate(flood_mask_bounds.origin())
         print(f'\tfound {len(new_blocks)} new blocks')

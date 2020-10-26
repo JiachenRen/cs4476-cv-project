@@ -61,6 +61,8 @@ pip3 install pytesseract
 - Preprocess input image by applying threshold and de-noise to convert to binary
 - `SIFT` related functionalities for extracting features from recognized text blocks
 - Group contours in detected text blocks for character level segmentation
+- Flood fill of speech bubbles using SIFT key points cluster centers as seeding coordinates
+- Morphing of speech bubble binary mask to consume texts within
 
 #### PIL
 
@@ -72,3 +74,4 @@ pip3 install pytesseract
 
 -` MeanShift` clustering of `SIFT` descriptor matches in masked image to hypothesize 
 new dialog bounding boxes
+- `KMeans` clustering of pixels under flood-fill seed mask to extract dominant color
