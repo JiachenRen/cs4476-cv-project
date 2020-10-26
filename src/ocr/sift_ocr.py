@@ -1,7 +1,6 @@
 from PIL import Image, ImageDraw
-from src.ocr.TextBlockInfo import parse_blocks_from_image
 from src.ocr.Rect import Rect
-from src.ocr.utils import draw_blocks_on_image
+from src.ocr.iterative_ocr import iterative_ocr
 from typing import List, Tuple
 import os
 import os.path as p
@@ -12,19 +11,25 @@ import cv2 as cv
 
 def sift_ocr(image: Image.Image, sift_ocr_path='../gen/sift_ocr'):
     """
-    SIFT feature guided image OCR
+    To overcome blind spots of Tesseract OCR, we developed SIFT feature guided image OCR.
 
-    Again, this is our original idea. The algorithm works like this:
-    First, use Tesseract OCR to extract initial text bounding boxes. Then,
-    learn learn the SIFT features in these bounding boxes and use the SIFT
-    features to hypothesize location of new bounding boxes.
+    The algorithm works like this:
+    - Use Tesseract OCR to extract initial text bounding boxes.
+    - Run Iterative OCR (also our idea) until no more text can be extracted (See iterative_ocr.py)
+    - Learn SIFT descriptors from extracted bounding boxes to build the vocabulary.
+    - Extract descriptors from input image
+    - Find good matches between vocab descriptors and input image descriptors,
+      these are likely places where Tesseract OCR failed to recognize text.
+    - Use MeanShift to cluster keypoints of matched descriptors to hypothesize
+    - Hypothesize bounding boxes from clustered keypoints, crop image using bounding boxes,
+      then run Tesseract OCR over each bounding boxes to extract more text.
 
     :param image: input image
     :param sift_ocr_path: path to store sift_ocr intermediaries
     :return:
     """
-    blocks = parse_blocks_from_image(image, 50, min_confidence=40)
-    print(f'> Found {len(blocks)} blocks')
+    masked_image, highlighted_image, blocks = iterative_ocr(image)
+    print(f'> Iterative OCR found {len(blocks)} blocks')
     text_line_blocks: List[np.ndarray] = []
     if p.exists(sift_ocr_path):
         sh.rmtree(sift_ocr_path)
@@ -42,7 +47,7 @@ def sift_ocr(image: Image.Image, sift_ocr_path='../gen/sift_ocr'):
 
     # At this point, image_blocks holds small clips of letters,
     # blocks holds all of the detected blocks
-    print('> Building vocabulary...')
+    print('> Building vocabulary')
     vocab_keypoints = []
     vocab_descriptors = []
     sift: cv.SIFT = cv.SIFT_create()
@@ -56,19 +61,14 @@ def sift_ocr(image: Image.Image, sift_ocr_path='../gen/sift_ocr'):
         kp_image = cv.drawKeypoints(kp_image, keypoints, kp_image, flags=cv.DrawMatchesFlags_DRAW_RICH_KEYPOINTS)
         cv.imwrite(p.join(sift_ocr_path, 'block_keypoints', f'{idx + 1}.png'), kp_image)
 
-    # Mask the original image to hide where the features come from
-    print('> Masking original image...')
-    masked_image = image.copy()
-    masked_image = draw_blocks_on_image(masked_image, blocks, fill=(255, 255, 255), alpha=255)
-    masked_image.save(p.join(sift_ocr_path, 'masked_image.png'))
     # noinspection PyTypeChecker
     masked_image_arr = np.array(masked_image.convert('L'))
-    print('> Extracting SIFT descriptors from input image...')
+    print('> Extracting SIFT descriptors')
     img_keypoints, img_descriptors = sift.detectAndCompute(masked_image_arr, None)
 
     # Matching between vocab features and image features
     bf = cv.BFMatcher()
-    print('> Matching between vocab and masked image...')
+    print('> Matching')
     matches: List[Tuple[cv.DMatch, cv.DMatch]] = bf.knnMatch(img_descriptors, np.array(vocab_descriptors), k=2)
 
     # Apply ratio test
@@ -77,7 +77,7 @@ def sift_ocr(image: Image.Image, sift_ocr_path='../gen/sift_ocr'):
         if m.distance < 0.8 * n.distance:
             good_matches.append(m)
 
-    print('> Painting good matches over masked image...')
+    print('> Painting matches from SIFT')
     masked_image = masked_image.convert('RGBA')
     draw_on_masked = ImageDraw.Draw(masked_image, mode='RGBA')
     for match in good_matches:
@@ -86,7 +86,7 @@ def sift_ocr(image: Image.Image, sift_ocr_path='../gen/sift_ocr'):
         w = h = 20
         rect = Rect(x - w / 2, y - h / 2, w, h)
         draw_on_masked.rectangle(rect.corners(), outline=(255, 0, 0), width=2)
-    masked_image.save(p.join(sift_ocr_path, 'masked_image_text_matches.png'))
+    masked_image.save(p.join(sift_ocr_path, 'matches_from_sift.png'))
 
 
 def detect_chars_in_image_block(image: np.ndarray) -> List[Rect]:

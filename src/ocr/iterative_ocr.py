@@ -45,8 +45,8 @@ def iterative_ocr(image: Image.Image, max_iterations=5, iterative_ocr_path='../g
         # Highlight detected text blocks in red
         highlighted_image = draw_blocks_on_image(highlighted_image, new_blocks)
         print(f'\tfound {len(new_blocks)} new text blocks')
-        highlighted_image.save(f'../gen/iterative_ocr/iteration_{i + 1}_highlighted.png')
-        masked_image.save(f'../gen/iterative_ocr/iteration_{i + 1}_masked.png')
+        highlighted_image.save(p.join(iterative_ocr_path, f'iteration_{i + 1}_highlighted.png'))
+        masked_image.save(p.join(iterative_ocr_path, f'iteration_{i + 1}_masked.png'))
         blocks += new_blocks
     return masked_image, highlighted_image, blocks
 

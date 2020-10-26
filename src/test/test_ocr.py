@@ -63,7 +63,7 @@ def test_sift_ocr():
 
 
 if __name__ == '__main__':
-    test_baseline_ocr()
-    test_preprocessed_ocr()
-    test_iterative_ocr()
+    # test_baseline_ocr()
+    # test_preprocessed_ocr()
+    # test_iterative_ocr()
     test_sift_ocr()

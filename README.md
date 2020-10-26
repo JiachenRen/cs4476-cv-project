@@ -59,7 +59,7 @@ pip3 install pytesseract
 #### opencv-python
 
 - Preprocess input image by applying threshold and de-noise to convert to binary
-- SIFT related functionalities for extracting features from recognized text blocks
+- `SIFT` related functionalities for extracting features from recognized text blocks
 - Group contours in detected text blocks for character level segmentation
 
 #### PIL
@@ -67,3 +67,8 @@ pip3 install pytesseract
 - Highlight text blocks
 - Converting between color spaces, write back to disk
 - Mask detected text blocks for iterative OCR
+
+#### sklearn
+
+-` MeanShift` clustering of `SIFT` descriptor matches in masked image to hypothesize 
+new dialog bounding boxes
