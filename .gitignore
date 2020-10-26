@@ -3,3 +3,4 @@
 venv/
 src/gen/
 */**/__pycache__/
+src/data/french/eDBtheque/

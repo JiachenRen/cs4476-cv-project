@@ -32,6 +32,26 @@ In [template.md](template.md), first add the line (order matters)
 
 then, in [parts](parts), create the corresponding file `section-name.md`, edit the content of the section there.
 
+## Database
+
+We are using both self collected data the `eDBtheque` database.
+
+### Data collection protocol
+
+#### Self collected data
+
+The self collected data contain several manga pages crawled from different websites. They are used purely for research purposes.
+
+Currently, we have uploaded 2 chapters of 2 different comics from the romantized indonesian manga site [seltekomik](www.sektekomik.com)
+to serve as our system's test data.
+
+#### eDBtheque
+
+The state-of-the-art manga database with ground truth pixel level labelling for panels and speech bubbles. It contains 100 pages in total,
+and is used in most of the relevant researches pertaining to information retrieval (IR) from manga. 
+
+If you are part of this project, contact Jiachen for the database login credentials. Otherwise request access from the owner [here](http://ebdtheque.univ-lr.fr/registration/)
+
 ## Project Dependencies & Installation Guide
 
 ### Install Tesseract OCR
