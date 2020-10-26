@@ -1,7 +1,8 @@
-from PIL import Image
+from PIL import Image, ImageDraw
 from src.ocr.TextBlockInfo import parse_blocks_from_image
 from src.ocr.Rect import Rect
-from typing import List
+from src.ocr.utils import draw_blocks_on_image
+from typing import List, Tuple
 import os
 import os.path as p
 import shutil as sh
@@ -22,7 +23,7 @@ def sift_ocr(image: Image.Image, sift_ocr_path='../gen/sift_ocr'):
     :param sift_ocr_path: path to store sift_ocr intermediaries
     :return:
     """
-    blocks = parse_blocks_from_image(image, 50, min_confidence=80)
+    blocks = parse_blocks_from_image(image, 50, min_confidence=40)
     print(f'> Found {len(blocks)} blocks')
     text_line_blocks: List[np.ndarray] = []
     if p.exists(sift_ocr_path):
@@ -32,22 +33,60 @@ def sift_ocr(image: Image.Image, sift_ocr_path='../gen/sift_ocr'):
     os.mkdir(p.join(sift_ocr_path, 'block_keypoints'))
     for i in range(len(blocks)):
         block = blocks[i]
-        print(f'> Block {i + 1} ({block.confidence})%')
         image_block = image.crop(block.bounds.box())
         # noinspection PyTypeChecker
         text_line = np.array(image_block)
         text_line_blocks.append(text_line)
-        # char_bounds = detect_chars_in_block(image_block_arr)
-        image_block.save(f'{sift_ocr_path}/blocks/block_{i + 1}.png')
+        print(f'> Block {i + 1} {block.confidence}%\t{block.text}')
+        image_block.save(p.join(sift_ocr_path, 'blocks', f'block_{i + 1}.png'))
 
     # At this point, image_blocks holds small clips of letters,
     # blocks holds all of the detected blocks
+    print('> Building vocabulary...')
+    vocab_keypoints = []
+    vocab_descriptors = []
+    sift: cv.SIFT = cv.SIFT_create()
     for idx, text_line in enumerate(text_line_blocks):
-        sift: cv.SIFT = cv.SIFT_create()
         keypoints, descriptors = sift.detectAndCompute(text_line, None)
+        if keypoints is None or descriptors is None:
+            continue
+        vocab_keypoints += list(keypoints)
+        vocab_descriptors += list(descriptors)
         kp_image = text_line.copy()
         kp_image = cv.drawKeypoints(kp_image, keypoints, kp_image, flags=cv.DrawMatchesFlags_DRAW_RICH_KEYPOINTS)
         cv.imwrite(p.join(sift_ocr_path, 'block_keypoints', f'{idx + 1}.png'), kp_image)
+
+    # Mask the original image to hide where the features come from
+    print('> Masking original image...')
+    masked_image = image.copy()
+    masked_image = draw_blocks_on_image(masked_image, blocks, fill=(255, 255, 255), alpha=255)
+    masked_image.save(p.join(sift_ocr_path, 'masked_image.png'))
+    # noinspection PyTypeChecker
+    masked_image_arr = np.array(masked_image.convert('L'))
+    print('> Extracting SIFT descriptors from input image...')
+    img_keypoints, img_descriptors = sift.detectAndCompute(masked_image_arr, None)
+
+    # Matching between vocab features and image features
+    bf = cv.BFMatcher()
+    print('> Matching between vocab and masked image...')
+    matches: List[Tuple[cv.DMatch, cv.DMatch]] = bf.knnMatch(img_descriptors, np.array(vocab_descriptors), k=2)
+
+    # Apply ratio test
+    good_matches = []
+    for m, n in matches:
+        if m.distance < 0.8 * n.distance:
+            good_matches.append(m)
+
+    print('> Painting good matches over masked image...')
+    masked_image = masked_image.convert('RGBA')
+    draw_on_masked = ImageDraw.Draw(masked_image, mode='RGBA')
+    for match in good_matches:
+        kp: cv.KeyPoint = img_keypoints[match.queryIdx]
+        x, y = kp.pt
+        w = h = 20
+        rect = Rect(x - w / 2, y - h / 2, w, h)
+        draw_on_masked.rectangle(rect.corners(), outline=(255, 0, 0), width=2)
+    masked_image.save(p.join(sift_ocr_path, 'masked_image_text_matches.png'))
 
 
 def detect_chars_in_image_block(image: np.ndarray) -> List[Rect]:
@@ -58,18 +97,11 @@ def detect_chars_in_image_block(image: np.ndarray) -> List[Rect]:
     OpenCV is used to detect separate, contours,
     then bounding boxes are draw around each contour to segment characters.
 
-    :param image: an nd.array, must be unambiguously a line of readable characters
+    :param image: an nd.array, must be unambiguously a line of readable characters, 1D binary image
     :return: bounding boxes, sorted from left to right, of all characters in the block
     """
-    # noinspection PyTypeChecker
-    image = cv.fastNlMeansDenoisingColored(image, None, 10, 10, 7, 21)
-    gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-
-    # Apply a threshold to convert image to binary
-    res, thresh = cv.threshold(gray, 150, 255, cv.THRESH_BINARY_INV)
-
     contours, hierarchy = \
-        cv.findContours(thresh, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
+        cv.findContours(image, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
 
     char_bounds: List[Rect] = []
     for contour in contours:

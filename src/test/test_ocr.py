@@ -1,14 +1,14 @@
 from PIL import Image
 from src.ocr.TextBlockInfo import parse_blocks_from_image, TextBlockInfo
 from src.ocr.iterative_ocr import iterative_ocr
-from src.ocr.utils import highlight_blocks_on_image, preprocess
+from src.ocr.utils import draw_blocks_on_image, preprocess
 from typing import List, Tuple
 import numpy as np
 import imageio
 
 from src.ocr.sift_ocr import sift_ocr
 
-image_uri = '../data/indonesian/sektekomik.com/demon_king/2.png'
+image_uri = '../data/indonesian/sektekomik.com/slime/7.png'
 
 
 def load_test_image() -> Tuple[np.ndarray, Image.Image]:
@@ -25,7 +25,7 @@ def test_baseline_ocr():
     for block in blocks:
         print(block)
 
-    highlighted = highlight_blocks_on_image(test_img, blocks)
+    highlighted = draw_blocks_on_image(test_img, blocks)
 
     # Save image with text bounding box to gen/image_ocr_baseline.png
     highlighted.save('../gen/ocr_baseline.png')
@@ -42,7 +42,7 @@ def test_preprocessed_ocr():
     for block in blocks:
         print(block)
 
-    highlighted = highlight_blocks_on_image(pil_image, blocks)
+    highlighted = draw_blocks_on_image(pil_image, blocks)
 
     # Save image with text bounding box to gen/image_ocr_baseline.png
     highlighted.save('../gen/ocr_preprocessed.png')
@@ -63,7 +63,7 @@ def test_sift_ocr():
 
 
 if __name__ == '__main__':
-    # test_baseline_ocr()
-    # test_preprocessed_ocr()
-    # test_iterative_ocr()
+    test_baseline_ocr()
+    test_preprocessed_ocr()
+    test_iterative_ocr()
     test_sift_ocr()

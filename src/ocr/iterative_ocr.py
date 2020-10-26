@@ -1,6 +1,6 @@
 from PIL import Image, ImageDraw
 from typing import List, Tuple
-from src.ocr.utils import highlight_blocks_on_image
+from src.ocr.utils import draw_blocks_on_image
 import numpy as np
 import os
 import shutil
@@ -41,9 +41,9 @@ def iterative_ocr(image: Image.Image, max_iterations=5, iterative_ocr_path='../g
             print('> No text detected, stopping.')
             break
         # Mask recognized text blocks
-        masked_image = highlight_blocks_on_image(masked_image, new_blocks, fill=(255, 255, 255), alpha=255)
+        masked_image = draw_blocks_on_image(masked_image, new_blocks, fill=(255, 255, 255), alpha=255)
         # Highlight detected text blocks in red
-        highlighted_image = highlight_blocks_on_image(highlighted_image, new_blocks)
+        highlighted_image = draw_blocks_on_image(highlighted_image, new_blocks)
         print(f'\tfound {len(new_blocks)} new text blocks')
         highlighted_image.save(f'../gen/iterative_ocr/iteration_{i + 1}_highlighted.png')
         masked_image.save(f'../gen/iterative_ocr/iteration_{i + 1}_masked.png')

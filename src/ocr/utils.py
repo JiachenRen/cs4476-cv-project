@@ -5,8 +5,8 @@ import cv2
 from src.ocr.TextBlockInfo import TextBlockInfo
 
 
-def highlight_blocks_on_image(img: Image.Image, blocks: List[TextBlockInfo], fill=(255, 0, 0), outline=None,
-                              line_width=2, alpha=80) -> Image.Image:
+def draw_blocks_on_image(img: Image.Image, blocks: List[TextBlockInfo], fill=(255, 0, 0), outline=None,
+                         line_width=2, alpha=80) -> Image.Image:
     """
     Highlights detected text blocks on a copy of the image with supplied drawing parameters
 
