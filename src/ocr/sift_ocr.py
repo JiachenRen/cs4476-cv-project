@@ -1,7 +1,9 @@
 from PIL import Image, ImageDraw
 from src.ocr.Rect import Rect
 from src.ocr.iterative_ocr import iterative_ocr
-from typing import List, Tuple
+from typing import List, Tuple, Dict
+from sklearn.cluster import MeanShift
+from collections import Counter
 import os
 import os.path as p
 import shutil as sh
@@ -77,15 +79,45 @@ def sift_ocr(image: Image.Image, sift_ocr_path='../gen/sift_ocr'):
         if m.distance < 0.8 * n.distance:
             good_matches.append(m)
 
-    print('> Painting matches from SIFT')
     masked_image = masked_image.convert('RGBA')
     draw_on_masked = ImageDraw.Draw(masked_image, mode='RGBA')
-    for match in good_matches:
+
+    # Point of interests - where potential dialog bounding boxes should be
+    poi = np.zeros((len(good_matches), 2))
+    for idx, match in enumerate(good_matches):
         kp: cv.KeyPoint = img_keypoints[match.queryIdx]
         x, y = kp.pt
+        poi[idx, :] = np.array([x, y])
+
+    print('> Finding match cluster centers')
+    mean_shift = MeanShift(cluster_all=False, bandwidth=50)
+    mean_shift.fit(poi)
+    centers = mean_shift.cluster_centers_
+    poi_labels = mean_shift.predict(poi)
+
+    # Discard cluster centers with label count lower than min_label count
+    min_label_count = 3
+    label_counter = Counter()
+    for label in poi_labels:
+        label_counter[label] += 1
+
+    # Draw points by cluster red if not discarded, dark gray otherwise
+    for i in range(len(poi)):
+        x, y = poi[i]
+        label = poi_labels[i]
+        color = (255, 0, 0) if label_counter[label] >= min_label_count and label != -1 else (100, 100, 100)
         w = h = 20
         rect = Rect(x - w / 2, y - h / 2, w, h)
-        draw_on_masked.rectangle(rect.corners(), outline=(255, 0, 0), width=2)
+        draw_on_masked.rectangle(rect.corners(), outline=color, width=2)
+
+    # Draw cluster centers green if not discarded, gray otherwise
+    for i in range(len(centers)):
+        x, y = centers[i]
+        count = label_counter[i]
+        w = h = 40
+        rect = Rect(x - w / 2, y - h / 2, w, h)
+        color = (0, 255, 0) if count >= min_label_count else (200, 200, 200)
+        draw_on_masked.rectangle(rect.corners(), outline=color, width=3)
     masked_image.save(p.join(sift_ocr_path, 'matches_from_sift.png'))
 
 
