@@ -2,35 +2,69 @@
 
 Project website can be found [here](https://jiachenren.github.io/cs4476-cv-project/).
 
-### Where's the Paper?
+## Paper
 
-Click [here](web/README.md) to see the rendered paper.
+The source for the three required deliverables (proposal, 2 updates) are broken down into 3 parts under [docs/src](docs/src).
+The files are organized like so under docs
+
+```
+.
+├── compile.py
+├── proposal.md
+└── src
+    └── proposal
+        ├── images
+        │   ├── mainfig.png
+        │   └── ... other images
+        ├── index.md
+        └── sections
+            ├── abstract.md
+            └── ... other sections
+    ├── update
+        ├── ... same structure as proposal
+    ├── ... other parts
+```
+
+### Deliverables
+
+Click [here](docs/proposal.md) to see the proposal.
+
+Click [here](docs/update.md) to see the first midterm update.
+
+Click [here](docs/final.md) to see the (second) final update.
 
 ### How to contribute?
+There are three versions, `proposal`, `update`, and `final`, and the source files for these are located under their respective
+directory under [docs/src]. 
 
-The different sections of the paper are broken into parts under [parts](parts). To work on a section, edit individual markdown files in there. When you are done, **make sure to execute the following script to recompile the final paper** and commit:
+Each section of each version have their respective file under `sections` directory for each update. 
+To work on a section, edit individual markdown files in there. **Edit these, not the rendered version**.
+ 
+When you are done, **execute the following script to recompile** and commit:
 
 #### Compile
 
-Make sure you are under the project directory, and have `python3`
+Make sure you are under the `docs` directory, and have `python3`. 
+The compiler will generate the final paper for each version (`proposal.md`, `update.md`, `final.md`) and put them under [docs](docs)
 
 ```shell
-chmod +x scripts/compile.py && scripts/compile.py
+chmod +x compile.py && compile.py
 ```
 
 #### Images
 
-To add images, put them under [images](images) directory. To link them from markdown, use the relative path. E.g. `[Alt Text](../images/<filename>)`
+To add images, put them under `images` directory for the correct version. Yes, each version has its own `images` directory. 
+To link them from markdown, use the relative path. E.g. `[Alt Text](../images/<filename>)`
 
 #### How to add a new section?
 
-In [template.md](template.md), first add the line (order matters)
+In `index.md` for the version you are working on, first add the line (order matters).
 
 ```markdown
 [//]: # "section-name.md"
 ```
 
-then, in [parts](parts), create the corresponding file `section-name.md`, edit the content of the section there.
+Then, in `sections.md` under `sections` directory for the version, create the corresponding file `section-name.md`, edit the content of the section there.
 
 ## Database
 
@@ -42,7 +76,7 @@ We are using both self collected data the `eDBtheque` database.
 
 The self collected data contain several manga pages crawled from different websites. They are used purely for research purposes.
 
-Currently, we have uploaded 2 chapters of 2 different comics from the romantized indonesian manga site [seltekomik](www.sektekomik.com)
+Currently, we have uploaded 2 chapters of 2 different comics from the romantized indonesian manga site [sektekomik](www.sektekomik.com)
 to serve as our system's test data.
 
 #### eDBtheque
