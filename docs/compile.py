@@ -7,7 +7,9 @@ import os.path as p
 src_path = 'src'
 
 for path in os.listdir(src_path):
-    print(f'> Compiling {path}...')
+    if path.startswith('.'):
+        continue
+    print(f'> Compiling {path}.md ...')
     os.chdir(p.join(src_path, path))
     template_file = open('index.md', 'r')
     readme_lines = template_file.read().split('\n')
@@ -16,7 +18,7 @@ for path in os.listdir(src_path):
     sections = os.listdir('sections')
 
     for section in sections:
-        print(f'\tCompiling {section}')
+        print(f'\t├── compiling {section}')
         f = open(f'sections/{section}', 'r')
         part_md = f.read().split('\n')
         f.close()
@@ -41,15 +43,14 @@ for path in os.listdir(src_path):
     buffer = ''
     for line in readme_lines:
         # Change directories of '../' to '<final readme name>/images'
-        line = re.sub(r'\[([^\]]*)\]\(\.\.\/', r'[\1](src/' + path + '/images/', line)
+        line = re.sub(r'\[([^\]]*)\]\(\.\.\/', r'[\1](src/' + path + '/', line)
         buffer += f'{line}\n'
 
     os.chdir('../../')
     readme_file = open(f'{path}.md', 'w')
     readme_file.write(buffer)
     readme_file.close()
-
-print('> Done')
+    print('\t└── done')
 
 
 

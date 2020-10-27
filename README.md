@@ -61,7 +61,7 @@ To link them from markdown, use the relative path. E.g. `[Alt Text](../images/<f
 In `index.md` for the version you are working on, first add the line (order matters).
 
 ```markdown
-[//]: # "section-name.md"
+[//]: # "<section_name>.md"
 ```
 
 Then, in `sections.md` under `sections` directory for the version, create the corresponding file `section-name.md`, edit the content of the section there.

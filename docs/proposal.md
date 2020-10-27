@@ -76,11 +76,11 @@ When documents are clearly laid out and have global structure (for example, a bu
 
 First, CNN is adopted to detect text blocks, from which character candidates are extracted. Then FPN is used to predict the corresponding segmentation masks. Last, segmentation mask is used to ﬁnd suitable rectangular bounding boxes for the text instances. The model generates bounding boxes and segmentation masks for each instance of an object in the image.
 
-![Manga2](src/proposal/images/images/manga2.png)
+![Manga2](src/proposal/images/manga2.png)
 
 For the token/character identification, we plan to identify the Japanese characters in the regions where we detect some text in the first step. Here we want to apply Optical Character Recognition to text images and extract individual Japanese characters in sequence from those images. We already found some code that implements this model ([Japanese OCR](https://github.com/phamdinhthang/japanese_OCR) and [Hiragana Identifier](https://github.com/RakuTheSenpai/Hiragana-Identifier)). At the same time, we expect our output of this step to be some form of sentences so that we can translate the sentences in Japanese to English context later. Since text in manga is usually aligned vertically from top to bottom, we want to first identify separate text columns by detecting blank areas between them, and this can be possibly implemented using a simple gradient energy map. After getting the columns, we may also want to segment the columns on a character-level basis (including punctuations). Then we plan to apply the recognition model we mentioned above to classify each individual character and concatenate them into complete sentences.
 
-![Manga2](src/proposal/images/images/manga3.png)
+![Manga2](src/proposal/images/manga3.png)
 
 ##### 2. Using Hough Transform and Canny Edge Detection to find speech bubbles and text.
 
