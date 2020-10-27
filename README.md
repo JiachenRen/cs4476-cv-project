@@ -35,7 +35,7 @@ Click [here](docs/final.md) to see the (second) final update.
 
 ### How to contribute?
 There are three versions, `proposal`, `update`, and `final`, and the source files for these are located under their respective
-directory under [docs/src]. 
+directory under [docs/src](docs/src). 
 
 Each section of each version have their respective file under `sections` directory for each update. 
 To work on a section, edit individual markdown files in there. **Edit these, not the rendered version**.
@@ -48,7 +48,7 @@ Make sure you are under the `docs` directory, and have `python3`.
 The compiler will generate the final paper for each version (`proposal.md`, `update.md`, `final.md`) and put them under [docs](docs)
 
 ```shell
-chmod +x compile.py && compile.py
+chmod +x compile.py && ./compile.py
 ```
 
 #### Images
