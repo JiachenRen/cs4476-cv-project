@@ -10,19 +10,40 @@ The files are organized like so under docs
 ```
 .
 ├── compile.py
+├── final.md
 ├── proposal.md
-└── src
-    └── proposal
-        ├── images
-        │   ├── mainfig.png
-        │   └── ... other images
-        ├── index.md
-        └── sections
-            ├── abstract.md
-            └── ... other sections
-    ├── update
-        ├── ... same structure as proposal
-    ├── ... other parts
+├── src
+│   ├── final
+│   │   ├── images
+│   │   ├── index.md
+│   │   └── sections
+│   │       ├── abstract.md
+│   │       ├── approach.md
+│   │       ├── conclusion.md
+│   │       ├── experiments_and_results.md
+│   │       ├── introduction.md
+│   │       ├── qualitative_results.md
+│   │       └── references.md
+│   ├── proposal
+│   │   ├── images
+│   │   ├── index.md
+│   │   └── sections
+│   │       ├── abstract.md
+│   │       ├── approach.md
+│   │       ├── experiments_and_results.md
+│   │       └── introduction.md
+│   └── update
+│       ├── images
+│       ├── index.md
+│       └── sections
+│           ├── abstract.md
+│           ├── approach.md
+│           ├── conclusion.md
+│           ├── experiments_and_results.md
+│           ├── introduction.md
+│           ├── qualitative_results.md
+│           └── references.md
+└── update.md
 ```
 
 ### Deliverables
