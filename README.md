@@ -17,21 +17,10 @@ The files are organized like so under docs
 │   │   ├── images
 │   │   ├── index.md
 │   │   └── sections
-│   │       ├── abstract.md
-│   │       ├── approach.md
-│   │       ├── conclusion.md
-│   │       ├── experiments_and_results.md
-│   │       ├── introduction.md
-│   │       ├── qualitative_results.md
-│   │       └── references.md
 │   ├── proposal
 │   │   ├── images
 │   │   ├── index.md
 │   │   └── sections
-│   │       ├── abstract.md
-│   │       ├── approach.md
-│   │       ├── experiments_and_results.md
-│   │       └── introduction.md
 │   └── update
 │       ├── images
 │       ├── index.md
