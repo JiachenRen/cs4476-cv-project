@@ -4,11 +4,18 @@ from src.ocr.iterative_ocr import iterative_ocr
 from src.ocr.utils import draw_blocks_on_image, preprocess
 from typing import List, Tuple
 import numpy as np
+import random
 import imageio
 
 from src.ocr.sift_ocr import sift_ocr
 
-image_uri = '../data/indonesian/sektekomik.com/slime/4.png'
+# Good Examples
+# image_uri = '../data/indonesian/sektekomik.com/slime/5.png'
+# image_uri = '../data/indonesian/sektekomik.com/slime/4.png'
+# image_uri = '../data/indonesian/sektekomik.com/slime/8.png'  # With min_cluster_label_count = 1
+
+# image_uri = '../data/indonesian/sektekomik.com/demon_king/2.png'
+image_uri = '../data/indonesian/sektekomik.com/demon_king/3.png'
 
 
 def load_test_image() -> Tuple[np.ndarray, Image.Image]:
@@ -62,14 +69,42 @@ def test_sift_ocr():
     np_image, pil_image = load_test_image()
     blocks = sift_ocr(pil_image, parser=TextBlockInfoParser())
 
-    highlighted = draw_blocks_on_image(pil_image, blocks)
+    # Group colors
+    colors = [
+        (255, 0, 0),
+        (0, 255, 0),
+        (0, 0, 255),
+        (255, 255, 0),
+        (100, 0, 255),
+        (200, 255, 0),
+        (200, 0, 255),
+        (0, 255, 255),
+        (255, 0, 255),
+        (255, 100, 0),
+        (0, 255, 100),
+        (100, 255, 0),
+        (0, 100, 255),
+        (255, 0, 100),
+        (255, 200, 0),
+        (255, 0, 200),
+        (0, 200, 255),
+        (0, 255, 200)
+    ]
+    random.shuffle(colors)
 
-    # Save image with text bounding box to gen/image_ocr_baseline.png
-    highlighted.save('../gen/sift_ocr/final_result.png')
+    # Save results from iterative ocr to gen/image_ocr_baseline.png
+    iterative_results = draw_blocks_on_image(pil_image, blocks[0])
+    iterative_results.save('../gen/sift_ocr/ocr_result_iterative.png')
+
+    # Save grouped results
+    grp_results_img = pil_image.copy()
+    for grp in range(1, len(blocks)):
+        grp_results_img = draw_blocks_on_image(grp_results_img, blocks[grp], fill=colors[grp])
+    grp_results_img.save('../gen/sift_ocr/ocr_result_grouped.png')
 
 
 if __name__ == '__main__':
     test_baseline_ocr()
     test_preprocessed_ocr()
-    test_iterative_ocr()
+    # test_iterative_ocr()
     test_sift_ocr()

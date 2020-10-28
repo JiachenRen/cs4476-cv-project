@@ -1,0 +1,13 @@
+
+Parser
+    - max_block_height: 50
+    - min_confidence: 0
+    - validation_regex: [a-zA-Z\?\.\,0-9\)\(]+
+
+Sift OCR
+    - morph_rect_size: 40
+    - mean_shift_bandwidth: 80
+    - min_cluster_label_count: 1
+    - sift_match_threshold: 0.7
+    - flood_mask_size: 50
+    - flood_tolerance: (5, 5, 5)

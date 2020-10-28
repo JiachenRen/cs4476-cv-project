@@ -3,7 +3,7 @@ from src.ocr.Rect import Rect
 from src.ocr.iterative_ocr import iterative_ocr
 from src.ocr.TextBlockInfo import TextBlockInfo, TextBlockInfoParser
 from src.ocr.utils import draw_blocks_on_image
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 from sklearn.cluster import MeanShift, KMeans
 from collections import Counter
 import os
@@ -15,7 +15,7 @@ import cv2 as cv
 
 def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../gen/sift_ocr', morph_rect_size=40,
              mean_shift_bandwidth=80, min_cluster_label_count=2, sift_match_threshold=0.7,
-             mask_size=50, max_flood_err=(5, 5, 5)) -> List[TextBlockInfo]:
+             flood_mask_size=50, flood_tolerance=(5, 5, 5)) -> Dict[int, List[TextBlockInfo]]:
     """
     To overcome blind spots of Tesseract OCR, we developed SIFT feature guided image OCR.
 
@@ -35,21 +35,21 @@ def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../
     ✓ Extract bounding box from boundary (opencv)
     ✓ Use these new bounding boxes to crop the masked input image,
       then run Tesseract OCR over each to extract more text.
+    ✓ Results from different bounding boxes are put into different groups
 
     :param image: input image
     :param parser: text block info parser to use
     :param min_cluster_label_count: min number of points labelled for a cluster to keep it
     :param sift_match_threshold: threshold to keep sift matches, between 0-1, (smaller value = stricter match)
-    :param mask_size: size of the mask to use at cluster centers
+    :param flood_mask_size: size of the mask to use at cluster centers to facilitate flooding
     :param morph_rect_size: size of the structuring element used to fill characters in text balloons
-    :param max_flood_err: max allowed flood error in (R, G, B) when flooding speech bubbles
+    :param flood_tolerance: max allowed flood error in (R, G, B) when flooding speech bubbles
     :param sift_ocr_path: path to store sift_ocr intermediaries
     :param mean_shift_bandwidth: bandwidth for mean shift clustering of matched keypoints from input image
-    :return:
+    :return: a dictionary with keys to denote group number, and values are extracted text blocks in the group
+             dict[0] contains all blocks detected by iterative OCR
     """
-    _, _, blocks = iterative_ocr(image, parser)
-    print(f'> Iterative OCR found {len(blocks)} blocks')
-    text_line_blocks: List[np.ndarray] = []
+    # Clear files from last run
     if p.exists(sift_ocr_path):
         sh.rmtree(sift_ocr_path)
     os.mkdir(sift_ocr_path)
@@ -57,6 +57,33 @@ def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../
     os.mkdir(p.join(sift_ocr_path, 'block_keypoints'))
     os.mkdir(p.join(sift_ocr_path, 'masked'))
     os.mkdir(p.join(sift_ocr_path, 'masks'))
+
+    # Save parameters
+    params = f"""
+Parser
+    - max_block_height: {parser.max_block_height}
+    - min_confidence: {parser.min_confidence}
+    - validation_regex: {parser.validation_regex.pattern}
+
+Sift OCR
+    - morph_rect_size: {morph_rect_size}
+    - mean_shift_bandwidth: {mean_shift_bandwidth}
+    - min_cluster_label_count: {min_cluster_label_count}
+    - sift_match_threshold: {sift_match_threshold}
+    - flood_mask_size: {flood_mask_size}
+    - flood_tolerance: {flood_tolerance}
+"""
+    with open(p.join(sift_ocr_path, 'parameters.txt'), 'w') as file:
+        file.write(params)
+
+    # Run iterative OCR, and put results into grouped_blocks[0]
+    grouped_blocks: Dict[int, List[TextBlockInfo]] = {}
+    _, _, blocks = iterative_ocr(image, parser)
+    grouped_blocks[0] = blocks
+    print(f'> Iterative OCR found {len(blocks)} blocks')
+
+    # Crop text blocks found using iterative OCR and save them to blocks dir
+    text_line_blocks: List[np.ndarray] = []
     for i in range(len(blocks)):
         block = blocks[i]
         image_block = image.crop(block.bounds.box())
@@ -66,7 +93,7 @@ def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../
         print(f'> Block {i + 1} {block.confidence}%\t{block.text}')
         image_block.save(p.join(sift_ocr_path, 'blocks', f'block_{i + 1}.png'))
 
-    # At this point, image_blocks holds small clips of letters,
+    # At this point, text_line_blocks holds small clips of letters,
     # blocks holds all of the detected blocks
     print('> Building vocabulary')
     vocab_keypoints = []
@@ -86,12 +113,12 @@ def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../
     # noinspection PyTypeChecker
     img_keypoints, img_descriptors = sift.detectAndCompute(np.array(image.convert('L')), None)
 
-    # Matching between vocab features and image features
+    # Match vocab features with image features
     bf = cv.BFMatcher()
     print('> Matching')
     matches: List[Tuple[cv.DMatch, cv.DMatch]] = bf.knnMatch(img_descriptors, np.array(vocab_descriptors), k=2)
 
-    # Apply ratio test
+    # Apply ratio test to select good matches
     good_matches = []
     for m, n in matches:
         if m.distance < sift_match_threshold * n.distance:
@@ -130,7 +157,7 @@ def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../
     for i in range(len(centers)):
         x, y = centers[i]
         count = label_counter[i]
-        w = h = mask_size
+        w = h = flood_mask_size
         rect = Rect(x - w / 2, y - h / 2, w, h)
         if count >= min_cluster_label_count:
             valid_centers.append(centers[i])
@@ -144,11 +171,12 @@ def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../
     input_image_arr = np.array(image)
     # Structuring element to close text gaps in speech bubbles
     struct_element = cv.getStructuringElement(cv.MORPH_RECT, (morph_rect_size, morph_rect_size))
+    groups = 1
     for idx, c in enumerate(centers):
         print(f'> Hypothesizing bounding box from center {idx + 1}, {c}')
         flood_image = image.convert('RGB')
         draw = ImageDraw.Draw(flood_image)
-        w = h = mask_size
+        w = h = flood_mask_size
         x, y = tuple(c)
         mask_rect = Rect(x - w / 2, y - h / 2, w, h)
 
@@ -172,8 +200,8 @@ def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../
             flood_mask,
             tuple(c),
             (0, 255, 0),
-            loDiff=max_flood_err,
-            upDiff=max_flood_err,
+            loDiff=flood_tolerance,
+            upDiff=flood_tolerance,
             flags=4 | cv.FLOODFILL_MASK_ONLY | (255 << 8))
 
         # Processing the flooded area a bit to make it a perfect speech bubble
@@ -200,8 +228,10 @@ def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../
         for block in new_blocks:
             block.bounds.translate(flood_mask_bounds.origin())
         print(f'\tfound {len(new_blocks)} new blocks')
-        blocks += new_blocks
-    return blocks
+        if len(new_blocks) > 0:
+            grouped_blocks[groups] = new_blocks
+            groups += 1
+    return grouped_blocks
 
 
 def detect_chars_in_image_block(image: np.ndarray) -> List[Rect]:
