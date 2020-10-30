@@ -35,7 +35,6 @@ The point is, none of these produce an end-to-end system with high level of perf
 Our approach introduces several innovations in designing an end-to-end pipeline for automated manga translation. In tackling this
 challenging problem, we combined traditional machine learning and computer vision algorithms with deep learning methods to achieve
 results far better than the baseline approach. Specifically, we come up with the **SIFT guided OCR** algorithm to extract text from
-manga speech bubbles and show that it performs far better than the baseline in the industry with qualitative results. The details
-of the algorithm will be detailed in the next section.
+manga speech bubbles. We show that our algorithm performs far better than the baseline in the industry with qualitative results.
 
 **Todo: Teaser Figure**
