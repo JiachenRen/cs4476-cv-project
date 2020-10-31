@@ -19,13 +19,13 @@ In order to run experiments, test hypothesis, and assess how well our algorithm 
 <table>
 	<tr>
 		<td>
-			<img src="../images/sample_pages/3.png"></img>
+			<img src="../images/sample_pages/3.png">
 		</td>
 		<td>
-			<img src="../images/sample_pages/11.png"></img>
+			<img src="../images/sample_pages/11.png">
 		</td>
 		<td>
-			<img src="../images/sample_pages/12.png"></img>
+			<img src="../images/sample_pages/12.png">
 		</td>
 	</tr>
 </table>
@@ -46,10 +46,10 @@ In this section, we will show results obtained from each stage of our pipeline.
 	</tr>
 	<tr>
 		<td>
-			<img src="../images/ocr_results/slime_page_4/input_image.png"></img>
+			<img src="../images/ocr_results/slime_page_4/input_image.png">
 		</td>
 		<td>
-			<img src="../images/ocr_results/slime_page_5/input_image.png"></img>
+			<img src="../images/ocr_results/slime_page_5/input_image.png">
 		</td>
 	</tr>
 </table>
@@ -61,42 +61,42 @@ Some "good" text blocks from page 4 of slime:
 <table>
   <tr>
     <td>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_1.png"></img>
-  		<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_2.png"></img>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_5.png"></img>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_6.png"></img>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_7.png"></img>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_8.png"></img>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_9.png"></img>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_10.png"></img>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_11.png"></img>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_12.png"></img>
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_1.png">
+  		<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_2.png">
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_5.png">
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_6.png">
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_7.png">
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_8.png">
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_9.png">
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_10.png">
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_11.png">
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_12.png">
   	</td>
   </tr>
 	<tr>
     <td>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_13.png"></img>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_15.png"></img>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_16.png"></img>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_17.png"></img>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_18.png"></img>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_19.png"></img>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_23.png"></img>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_24.png"></img>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_25.png"></img>
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_13.png">
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_15.png">
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_16.png">
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_17.png">
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_18.png">
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_19.png">
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_23.png">
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_24.png">
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_25.png">
   	</td>
   </tr>
 	<tr>
     <td>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_33.png"></img>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_35.png"></img>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_36.png"></img>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_37.png"></img>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_38.png"></img>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_39.png"></img>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_40.png"></img>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_41.png"></img>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_42.png"></img>
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_33.png">
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_35.png">
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_36.png">
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_37.png">
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_38.png">
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_39.png">
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_40.png">
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_41.png">
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_42.png">
   	</td>
   </tr>
 </table>
@@ -105,11 +105,11 @@ Not all text blocks actually contains texts, here are all bad text blocks from s
 <table>
   <tr>
     <td>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_3.png"></img>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_14.png"></img>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_20.png"></img>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_21.png"></img>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_22.png"></img>
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_3.png">
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_14.png">
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_20.png">
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_21.png">
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/blocks/block_22.png">
   	</td>
   </tr>
 </table>
@@ -123,15 +123,15 @@ Here are some keypoint descriptors learned from the text blocks that serve as vo
 <table>
   <tr>
     <td>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/block_keypoints/1.png"></img>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/block_keypoints/2.png"></img>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/block_keypoints/5.png"></img>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/block_keypoints/6.png"></img>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/block_keypoints/7.png"></img>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/block_keypoints/8.png"></img>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/block_keypoints/10.png"></img>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/block_keypoints/11.png"></img>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/block_keypoints/12.png"></img>
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/block_keypoints/1.png">
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/block_keypoints/2.png">
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/block_keypoints/5.png">
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/block_keypoints/6.png">
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/block_keypoints/7.png">
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/block_keypoints/8.png">
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/block_keypoints/10.png">
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/block_keypoints/11.png">
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/block_keypoints/12.png">
     </td>
   </tr>
 </table>
@@ -149,10 +149,10 @@ Red rectangles are sift mathces while green rectangles are match cluster centers
 	</tr>
 	<tr>
 		<td>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/matches_from_sift.png"></img>
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/matches_from_sift.png">
 		</td>
 		<td>
-			<img src="../images/ocr_results/slime_page_5/sift_ocr/matches_from_sift.png"></img>
+			<img src="../images/ocr_results/slime_page_5/sift_ocr/matches_from_sift.png">
 		</td>
 	</tr>
 </table>
@@ -165,31 +165,31 @@ Speech bubble masks extracted from slime page 4
   <tr><th>Good</th></tr>
 	<tr>
 		<td>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/masks/2.png"></img>
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/masks/2.png">
 		</td>
 <td>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/masks/3.png"></img>
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/masks/3.png">
 		</td>
 <td>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/masks/5.png"></img>
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/masks/5.png">
 		</td>
 <td>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/masks/6.png"></img>
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/masks/6.png">
 		</td>
 <td>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/masks/7.png"></img>
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/masks/7.png">
 		</td>
 </tr>
 <tr><th>Bad</th></tr>
 	<tr>
 		<td>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/masks/1.png"></img>
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/masks/1.png">
 		</td>
 <td>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/masks/9.png"></img>
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/masks/9.png">
 		</td>
 <td>
-			<img src="../images/ocr_results/slime_page_4/sift_ocr/masks/10.png"></img>
+			<img src="../images/ocr_results/slime_page_4/sift_ocr/masks/10.png">
 		</td>
 </table>
 
@@ -199,13 +199,13 @@ Speech bubble masks extracted from slime page 5
   <tr><th>Good</th></tr>
 	<tr>
 		<td>
-			<img src="../images/ocr_results/slime_page_5/sift_ocr/masks/1.png"></img>
+			<img src="../images/ocr_results/slime_page_5/sift_ocr/masks/1.png">
 		</td>
 <td>
-			<img src="../images/ocr_results/slime_page_5/sift_ocr/masks/2.png"></img>
+			<img src="../images/ocr_results/slime_page_5/sift_ocr/masks/2.png">
 		</td>
 <td>
-			<img src="../images/ocr_results/slime_page_5/sift_ocr/masks/3.png"></img>
+			<img src="../images/ocr_results/slime_page_5/sift_ocr/masks/3.png">
 		</td>
 </tr>
 </table>
@@ -217,19 +217,19 @@ Results from slime page 4
 <table>
   <tr>
     <td>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/masked/2.png"></img>
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/masked/2.png">
     </td>
 <td>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/masked/3.png"></img>
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/masked/3.png">
     </td>
 <td>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/masked/5.png"></img>
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/masked/5.png">
     </td>
 <td>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/masked/6.png"></img>
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/masked/6.png">
     </td>
 <td>
-      <img src="../images/ocr_results/slime_page_4/sift_ocr/masked/7.png"></img>
+      <img src="../images/ocr_results/slime_page_4/sift_ocr/masked/7.png">
     </td>
   </tr>
 </table>
@@ -239,9 +239,9 @@ Results from slime page 5
 <table>
   <tr>
     <td>
-      <img src="../images/ocr_results/slime_page_5/sift_ocr/masked/1.png"></img>
-      <img src="../images/ocr_results/slime_page_5/sift_ocr/masked/2.png"></img>
-      <img src="../images/ocr_results/slime_page_5/sift_ocr/masked/3.png"></img>
+      <img src="../images/ocr_results/slime_page_5/sift_ocr/masked/1.png">
+      <img src="../images/ocr_results/slime_page_5/sift_ocr/masked/2.png">
+      <img src="../images/ocr_results/slime_page_5/sift_ocr/masked/3.png">
     </td>
   </tr>
 </table>
@@ -259,10 +259,10 @@ Slime page 4 side by side comparison:
   </tr>
   <tr>
     <td>
-    	<img src="../images/ocr_results/slime_page_4/ocr_baseline.png"></img>
+    	<img src="../images/ocr_results/slime_page_4/ocr_baseline.png">
 		</td>
 		<td>
-    	<img src="../images/ocr_results/slime_page_4/sift_ocr/ocr_result_grouped.png"></img>
+    	<img src="../images/ocr_results/slime_page_4/sift_ocr/ocr_result_grouped.png">
 		</td>
   </tr>
 </table>
@@ -276,21 +276,21 @@ Slime page 5 side by side comparison:
   </tr>
 	<tr>
     <td>
-    	<img src="../images/ocr_results/slime_page_5/ocr_baseline.png"></img>
+    	<img src="../images/ocr_results/slime_page_5/ocr_baseline.png">
 		</td>
 		<td>
-    	<img src="../images/ocr_results/slime_page_5/sift_ocr/ocr_result_grouped.png"></img>
+    	<img src="../images/ocr_results/slime_page_5/sift_ocr/ocr_result_grouped.png">
 		</td>
   </tr>
 </table>
 
 
-
 #### Parameters
 
-SIFT-OCR algorithm has many tunable parameters, they are explained in the documentation below:
+SIFT-OCR algorithm has many tunable parameters, they are explained in the documentation below
 
 ```python
+
 def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../gen/sift_ocr', morph_rect_size=40,
              mean_shift_bandwidth=80, min_cluster_label_count=2, sift_match_threshold=0.7,
              flood_mask_size=50, flood_tolerance=(5, 5, 5)) -> Dict[int, List[TextBlockInfo]]:
