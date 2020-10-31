@@ -115,7 +115,15 @@ As previously mentioned in the [Dependencies](#dependencies) section, Tesseract 
 The algorithm is based on the following assumptions:
 
 1. Most speech bubbles have a closed, solid boundary (otherwise flood fill won't work). Although during experimentation, we found that the algorithm still achieves respectable results for non-closed-boundary speech bubbles.
-2. Speech bubbles have mostly uniform background color (which is true)
+2. Speech bubbles have mostly uniform background color (which is true). This is also a prerequisite for flood fill.
+3. Tesseract OCR can extract some initial text bounding boxes (otherwise we can't build SIFT vocabulary)
+
+Intuitively, since we know that SIFT is good at finding places that are similar to the vocabulary (in our case texts), SIFT-OCR
+combines the advantages of SIFT and Tesseract OCR. Essentially, we first use Tesseract OCR to establish some ground truth of what text should
+look like in this particular manga page. Then, using SIFT, we find all places where text might be in the page (what Tesseract OCR is not made to do).
+Then, using this info, we can "de-noise" the input and guide Tesseract to work on speech bubbles only. Since text in speech bubbles appear as structured documents,
+Tesseract achieves far better results than the baseline. In the next section, we will present qualitative results from each stage of our proposed pipeline and compare
+final results with baseline results.
 
 ### Experiments and Results
 
