@@ -1,10 +1,3 @@
-[//]: # "
-Motivation behind the problem you are solving, 
-what applications it has, 
-any brief background on the particular domain you are working in (if not regular RBG photographs), etc. 
-If you are using a new way to solve an existing problem, 
-briefly mention and describe the existing approaches and tell us how your approach is new.
-"
 Manga, or comics, is a form of art that combines story telling and art. In recent years, this form of media has garnered attention
 across language, culture and geological boundaries. This is largely due to an increasing number of mangas being made available online.
 To meet the demand of the manga consumers all over the world, many translators are working hard to translate manga from their original
