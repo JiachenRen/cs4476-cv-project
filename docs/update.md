@@ -267,52 +267,59 @@ Red rectangles are sift mathces while green rectangles are match cluster centers
 Speech bubble masks extracted from slime page 4
 
 <table>
-  <tr><th>Good</th></tr>
-	<tr>
-		<td>
-			<img src="src/update/images/ocr_results/slime_page_4/sift_ocr/masks/2.png">
-		</td>
-<td>
-			<img src="src/update/images/ocr_results/slime_page_4/sift_ocr/masks/3.png">
-		</td>
-<td>
-			<img src="src/update/images/ocr_results/slime_page_4/sift_ocr/masks/5.png">
-		</td>
-<td>
-			<img src="src/update/images/ocr_results/slime_page_4/sift_ocr/masks/6.png">
-		</td>
-<td>
-			<img src="src/update/images/ocr_results/slime_page_4/sift_ocr/masks/7.png">
-		</td>
-</tr>
-<tr><th>Bad</th></tr>
+    <tr>
+        <th>Good</th>
+    </tr>
+    <tr>
+        <td>
+            <img src="src/update/images/ocr_results/slime_page_4/sift_ocr/masks/2.png">
+        </td>
+        <td>
+            <img src="src/update/images/ocr_results/slime_page_4/sift_ocr/masks/3.png">
+        </td>
+        <td>
+            <img src="src/update/images/ocr_results/slime_page_4/sift_ocr/masks/5.png">
+        </td>
+        <td>
+            <img src="src/update/images/ocr_results/slime_page_4/sift_ocr/masks/6.png">
+        </td>
+        <td>
+            <img src="src/update/images/ocr_results/slime_page_4/sift_ocr/masks/7.png">
+        </td>
+    </tr>
+    <tr>
+        <th>Bad</th>
+    </tr>
 	<tr>
 		<td>
 			<img src="src/update/images/ocr_results/slime_page_4/sift_ocr/masks/1.png">
 		</td>
-<td>
+        <td>
 			<img src="src/update/images/ocr_results/slime_page_4/sift_ocr/masks/9.png">
 		</td>
-<td>
+        <td>
 			<img src="src/update/images/ocr_results/slime_page_4/sift_ocr/masks/10.png">
 		</td>
+	</tr>
 </table>
 
 Speech bubble masks extracted from slime page 5
 
 <table>
-  <tr><th>Good</th></tr>
+    <tr>
+        <th>Good</th>
+    </tr>
 	<tr>
 		<td>
 			<img src="src/update/images/ocr_results/slime_page_5/sift_ocr/masks/1.png">
 		</td>
-<td>
+        <td>
 			<img src="src/update/images/ocr_results/slime_page_5/sift_ocr/masks/2.png">
 		</td>
-<td>
+        <td>
 			<img src="src/update/images/ocr_results/slime_page_5/sift_ocr/masks/3.png">
 		</td>
-</tr>
+    </tr>
 </table>
 
 ##### Mask, crop, then detect text in speech bubbles (steps 10, 11, 12)
@@ -324,16 +331,16 @@ Results from slime page 4
     <td>
       <img src="src/update/images/ocr_results/slime_page_4/sift_ocr/masked/2.png">
     </td>
-<td>
+    <td>
       <img src="src/update/images/ocr_results/slime_page_4/sift_ocr/masked/3.png">
     </td>
-<td>
+    <td>
       <img src="src/update/images/ocr_results/slime_page_4/sift_ocr/masked/5.png">
     </td>
-<td>
+    <td>
       <img src="src/update/images/ocr_results/slime_page_4/sift_ocr/masked/6.png">
     </td>
-<td>
+    <td>
       <img src="src/update/images/ocr_results/slime_page_4/sift_ocr/masked/7.png">
     </td>
   </tr>
@@ -365,10 +372,10 @@ Slime page 4 side by side comparison:
   <tr>
     <td>
     	<img src="src/update/images/ocr_results/slime_page_4/ocr_baseline.png">
-		</td>
-		<td>
+	</td>
+	<td>
     	<img src="src/update/images/ocr_results/slime_page_4/sift_ocr/ocr_result_grouped.png">
-		</td>
+	</td>
   </tr>
 </table>
 
@@ -382,10 +389,10 @@ Slime page 5 side by side comparison:
 	<tr>
     <td>
     	<img src="src/update/images/ocr_results/slime_page_5/ocr_baseline.png">
-		</td>
-		<td>
-    	<img src="src/update/images/ocr_results/slime_page_5/sift_ocr/ocr_result_grouped.png">
-		</td>
+	</td>
+	<td>
+        <img src="src/update/images/ocr_results/slime_page_5/sift_ocr/ocr_result_grouped.png">
+	</td>
   </tr>
 </table>
 
@@ -395,7 +402,6 @@ Slime page 5 side by side comparison:
 SIFT-OCR algorithm has many tunable parameters, they are explained in the documentation below
 
 ```python
-
 def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../gen/sift_ocr', morph_rect_size=40,
              mean_shift_bandwidth=80, min_cluster_label_count=2, sift_match_threshold=0.7,
              flood_mask_size=50, flood_tolerance=(5, 5, 5)) -> Dict[int, List[TextBlockInfo]]:
