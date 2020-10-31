@@ -288,3 +288,64 @@ Slime page 5 side by side comparison:
 
 #### Parameters
 
+SIFT-OCR algorithm has many tunable parameters, they are explained in the documentation below:
+
+```python
+def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../gen/sift_ocr', morph_rect_size=40,
+             mean_shift_bandwidth=80, min_cluster_label_count=2, sift_match_threshold=0.7,
+             flood_mask_size=50, flood_tolerance=(5, 5, 5)) -> Dict[int, List[TextBlockInfo]]:
+    """
+    To overcome blind spots of Tesseract OCR, we developed SIFT feature guided image OCR.
+
+    The algorithm works like this:
+    ✓ Use Tesseract OCR to extract initial text bounding boxes.
+    ✓ Run Iterative OCR until no more text can be extracted (See iterative_ocr.py)
+    ✓ Learn SIFT descriptors from extracted bounding boxes to build the vocabulary.
+    ✓ Extract descriptors from input image
+    ✓ Find good matches between vocab descriptors and input image descriptors,
+      these are likely places where Tesseract OCR failed to recognize text.
+    ✓ Use MeanShift to cluster keypoints of matched descriptors to hypothesize text box centers
+    ✓ Mask image at centers
+    ✓ Flood fill (opencv) using centers as starting points
+    ✓ Using opencv, morph the bubbles to cover the texts within
+    ✓ Use the bubble as a binary mask to mask irrelevant parts of input image
+    ✓ Run boundary detection on bubbles to extract boundary
+    ✓ Extract bounding box from boundary (opencv)
+    ✓ Use these new bounding boxes to crop the masked input image,
+      then run Tesseract OCR over each to extract more text.
+    ✓ Results from different bounding boxes are put into different groups
+
+    :param image: input image
+    :param parser: text block info parser to use
+    :param min_cluster_label_count: min number of points labelled for a cluster to keep it
+    :param sift_match_threshold: threshold to keep sift matches, between 0-1, (smaller value = stricter match)
+    :param flood_mask_size: size of the mask to use at cluster centers to facilitate flooding
+    :param morph_rect_size: size of the structuring element used to fill characters in text balloons
+    :param flood_tolerance: max allowed flood error in (R, G, B) when flooding speech bubbles
+    :param sift_ocr_path: path to store sift_ocr intermediaries
+    :param mean_shift_bandwidth: bandwidth for mean shift clustering of matched keypoints from input image
+    :return: a dictionary with keys to denote group number, and values are extracted text blocks in the group
+             dict[0] contains all blocks detected by iterative OCR
+    """
+```
+
+The full definition of the function can be found [here](https://github.com/JiachenRen/cs4476-cv-project/blob/master/src/ocr/sift_ocr.py).
+
+The parameters used to generate the results above are listed below (the same for both page 4 and 5):
+
+```yaml
+Parser:
+  - max_block_height: 50
+  - min_confidence: 0
+  - validation_regex: [a-zA-Z\?\.\,0-9\)\(]+
+
+Sift OCR:
+  - morph_rect_size: 40
+  - mean_shift_bandwidth: 80
+  - min_cluster_label_count: 1
+  - sift_match_threshold: 0.7
+  - flood_mask_size: 50
+  - flood_tolerance: (5, 5, 5)
+```
+
+During experimentation, we found that the above parameters work really well for most cases.
