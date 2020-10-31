@@ -295,26 +295,6 @@ def sift_ocr(image: Image.Image, parser: TextBlockInfoParser, sift_ocr_path='../
              mean_shift_bandwidth=80, min_cluster_label_count=2, sift_match_threshold=0.7,
              flood_mask_size=50, flood_tolerance=(5, 5, 5)) -> Dict[int, List[TextBlockInfo]]:
     """
-    To overcome blind spots of Tesseract OCR, we developed SIFT feature guided image OCR.
-
-    The algorithm works like this:
-    ✓ Use Tesseract OCR to extract initial text bounding boxes.
-    ✓ Run Iterative OCR until no more text can be extracted (See iterative_ocr.py)
-    ✓ Learn SIFT descriptors from extracted bounding boxes to build the vocabulary.
-    ✓ Extract descriptors from input image
-    ✓ Find good matches between vocab descriptors and input image descriptors,
-      these are likely places where Tesseract OCR failed to recognize text.
-    ✓ Use MeanShift to cluster keypoints of matched descriptors to hypothesize text box centers
-    ✓ Mask image at centers
-    ✓ Flood fill (opencv) using centers as starting points
-    ✓ Using opencv, morph the bubbles to cover the texts within
-    ✓ Use the bubble as a binary mask to mask irrelevant parts of input image
-    ✓ Run boundary detection on bubbles to extract boundary
-    ✓ Extract bounding box from boundary (opencv)
-    ✓ Use these new bounding boxes to crop the masked input image,
-      then run Tesseract OCR over each to extract more text.
-    ✓ Results from different bounding boxes are put into different groups
-
     :param image: input image
     :param parser: text block info parser to use
     :param min_cluster_label_count: min number of points labelled for a cluster to keep it
