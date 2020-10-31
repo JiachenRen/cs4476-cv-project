@@ -149,13 +149,13 @@ In order to run experiments, test hypothesis, and assess how well our algorithm 
 <table>
 	<tr>
 		<td>
-			<img src="../images/sample_pages/3.png"></img>
+			<img src="src/update/images/sample_pages/3.png"></img>
 		</td>
 		<td>
-			<img src="../images/sample_pages/11.png"></img>
+			<img src="src/update/images/sample_pages/11.png"></img>
 		</td>
 		<td>
-			<img src="../images/sample_pages/12.png"></img>
+			<img src="src/update/images/sample_pages/12.png"></img>
 		</td>
 	</tr>
 </table>

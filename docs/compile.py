@@ -42,8 +42,8 @@ for path in os.listdir(src_path):
 
     buffer = ''
     for line in readme_lines:
-        # Change directories of '../' to '<final readme name>/images'
-        line = re.sub(r'\[([^\]]*)\]\(\.\.\/', r'[\1](src/' + path + '/', line)
+        # Change directories of '../' to 'src/{path}/images'
+        line = re.sub(r'\.\.\/images', r'src/' + path + '/images', line)
         buffer += f'{line}\n'
 
     os.chdir('../../')
