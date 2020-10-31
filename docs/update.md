@@ -133,7 +133,10 @@ The algorithm is based on the following assumptions:
 
 #### Qualitative Results
 
-[//]: # "experiments_and_results.md"
+[//]: # "qualitative_results.md"
+[//]: # "
+Show several visual examples of inputs/outputs of your system (success cases and failures) that help us better understand your approach.
+"
 
 ### Conclusion
 
