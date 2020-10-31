@@ -70,7 +70,8 @@ Justify any design choices or judgment calls you made in your approach.
 
 #### Dependencies
 
-##### Tesseract OCR
+**pytesseract**
+
 Our system builds on top of existing state-of-the-art OCR technology, [Google's Tesseract OCR](https://github.com/tesseract-ocr/tesseract).
 Tesseract OCR, currently maintained by google, has a long and robust history and is indisputably the go-to
 open source OCR engine. Tesseract OCR is capable of recognizing many different languages, but it is designed to recognize
@@ -81,8 +82,40 @@ bounding box from a manga page, which is enough for our purpose. Note that Tesse
 which is installed separately, and returns a CSV of extracted texts and their respective bounding boxes. To adapt it for our project,
 we made a higher level API wrapper for `pytesseract`, which can be found [here](https://github.com/JiachenRen/cs4476-cv-project/blob/master/src/ocr/TextBlockInfo.py).
 
-##### Open CV 
+**opencv-python**
 
+We use existing functions of [opencv-python](https://pypi.org/project/opencv-python/) for the following tasks:
+- Preprocess input image by applying threshold and de-noise
+- `SIFT` related functionalities for extracting features from recognized text blocks
+- Flood fill of speech bubbles using SIFT key points cluster centers as seeding coordinates
+- Morphing (dilation and erosion) of speech bubble binary mask to erase text contours
+
+**sklearn**
+
+We use several clustering algorithms from [sklearn](https://scikit-learn.org/stable/) including [mean-shift](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MeanShift.html) and [kmeans](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html) in several places. We will explain the usage in detail in the [SIFT-OCR Algorithm](#sift-ocr-algorithm) section.
+
+#### SIFT-OCR Algorithm
+
+As previously mentioned in the [Dependencies](#dependencies) section, Tesseract performs well on structured documents, not on mangas (we will demonstrate this as baseline results in the Experiments & Results section). To adapt Tesseract OCR so it can perform well on manga pages, we designed the SIFT-OCR algorithm. If you wish to look at the python source code, you can find it [here](https://github.com/JiachenRen/cs4476-cv-project/blob/master/src/ocr/sift_ocr.py) - we believe that our code is extremely well documented, so it is strongly encouraged to read it. Here are the details of this algorithm, broken down into steps:
+
+1. Use Tesseract OCR on the input image to extract initial text bounding boxes. At this point, each bounding box contains a line of text/characters.
+2. Run Iterative OCR until no more text can be extracted (See [iterative_ocr.py](https://github.com/JiachenRen/cs4476-cv-project/blob/master/src/ocr/iterative_ocr.py)).
+3. Learn SIFT descriptors from extracted bounding boxes to build the vocabulary. Essentially, we are learning language and font dependent characteristics of the text.
+4. Extract SIFT descriptors from the input image.
+5. Find good matches between vocabulary descriptors (descriptors extracted from lines of text) and input image descriptors - these are likely places where Tesseract OCR failed to recognize text.
+6. Use MeanShift clustering on keypoint coordinates of matched descriptors to hypothesize speech bubble centers, apply thresholding on number of instances in each center to throw away some "bad" centers.
+7. Extract pixels from arbitrarily sized rectangles centered at each cluster center from step 6, then use KMeans clustering on the pixels to find the dominant color - this is the background color of the speech bubble.
+8. Flood fill speech bubbles. The cluster centers from step 6 are used as seeding coordinate, and the background color from step 7 is used as seeding color for each speech bubble respectively.
+9. At this point, we have obtained binary masks shaped like speech bubbles. However, since flood fill is applied using the background color as seeding color, the texts in the bubble are not part of the mask. To morph the mask to consume the texts within, apply dilation and erosion filters using opencv.
+10. Use the bubble as a binary mask to mask irrelevant parts of input image.
+11. Run boundary detection on speech bubble masks, then calculate their bounding box using the detected boundary  (again, using opencv).
+12. For each of the detected binary speech bubble mask and their bounding box, first apply the binary mask so only the text within the speech bubble remains, then crop the image using the bounding box so the text becomes centered.
+13. Run Tesseract OCR again on each of the cropped, text-only images to detect and group found text blocks. The output of SIFT-OCR is a dictionary of `[GroupIndex: List[TextBlockInfo]]` that groups detected text blocks by the index of speech bubbles that the text belongs to.
+
+The algorithm is based on the following assumptions:
+
+1. Most speech bubbles have a closed, solid boundary (otherwise flood fill won't work). Although during experimentation, we found that the algorithm still achieves respectable results for non-closed-boundary speech bubbles.
+2. Speech bubbles have mostly uniform background color (which is true)
 
 ### Experiments and Results
 
