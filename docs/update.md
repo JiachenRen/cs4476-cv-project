@@ -464,9 +464,13 @@ very easily scales to longer pages, achieving equal performance. More qualitativ
 ### Conclusion
 
 [//]: # "conclusion.md"
-[//]: # "
-Conclusion would likely make the same points as the abstract. Discuss any future ideas you have to make your approach better.
-"
+So far, we have demonstrated the outstanding performance of SIFT-OCR compared to the baseline method in the task of extracting
+text from manga speech bubbles. This is the most difficult hurdle to get over in our pipeline. It required huge amount of innovation
+and effort from our team. That said, the algorithm is not without its defects - it has many tunable parameters, the effects of some
+are not fully understood. In addition, there are many other tasks down the pipeline, including stitching sentences together from
+detected text blocks, machine translation, and hypothesizing new bounding boxes for embedding the translated text. No matter how well
+an automated system performs, mistakes are inevitable - to make our system production ready, we'll also need to add UI
+for humans to optionally step in at every stage of the pipeline. We'll choose some of the tasks listed above to complete in the future.
 
 ### References
 
@@ -474,4 +478,19 @@ Conclusion would likely make the same points as the abstract. Discuss any future
 [//]: # "
 List out all the references you have used for your work.
 "
+Dubray, D., & Laubrock, J. (2019). Deep CNN-based Speech Balloon Detection and Segmentation for Comic Books. https://arxiv.org/pdf/1902.08137.pdf
+
+Gu’erin, Cl’ement, Rigaud, Mercier, Antoine, Ammar-Boudjelal, Farid, Bertet, Karell, Bouju, & Alain. (2013). eBDtheque: a representative database of comics. 1145–1149. eDBtheque. http://ebdtheque.univ-lr.fr
+
+Lee, M. (n.d.). pytesseract: Python-tesseract is a python wrapper for Google’s Tesseract-OCR. PyPI. https://pypi.org/project/pytesseract/
+
+opencv-python. (2019, November 21). PyPI. https://pypi.org/project/opencv-python/
+
+scikit-learn: machine learning in Python — scikit-learn 0.20.3 documentation. (2019). Scikit-Learn.Org. https://scikit-learn.org/stable/
+
+tesseract-ocr. (2019, October 20). tesseract-ocr/tesseract. GitHub; Google. https://github.com/tesseract-ocr/tesseract
+
+Thang, P. D. (2020, August 25). phamdinhthang/japanese_OCR. GitHub. https://github.com/phamdinhthang/japanese_OCR
+‌
+
 
