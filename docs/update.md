@@ -451,6 +451,15 @@ During experimentation, we found that the above parameters work really well for 
 [//]: # "
 Show several visual examples of inputs/outputs of your system (success cases and failures) that help us better understand your approach.
 "
+Previously, to better demonstrate how our algorithm works, we deliberately chose shorter manga pages. Our algorithm, however,
+very easily scales to longer pages, achieving equal performance. More qualitative results can be found below
+
+- [Demon King Page 2](src/update/images/ocr_results/demon_king_page_2/README.md)
+- [Demon King Page 3](src/update/images/ocr_results/demon_king_page_3/README.md)
+- [Slime Page 4](src/update/images/ocr_results/slime_page_4/README.md) (Old)
+- [Slime Page 5](src/update/images/ocr_results/slime_page_5/README.md) (Old)
+- [Slime Page 8](src/update/images/ocr_results/demon_king_page_2/README.md)
+
 
 ### Conclusion
 
