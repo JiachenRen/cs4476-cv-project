@@ -142,12 +142,14 @@ Our dataset contains manga pages with romantized Indonesian text. All the experi
 
 In this section, we will show results obtained from each stage of our pipeline.
 
+
+
 ##### Input pages
 
 <table>
 	<tr>
-		<th>Slime page 4</th>
-		<th>Slime page 5</th>
+		<th>Slime page 4 (S4)</th>
+		<th>Slime page 5 (S5)</th>
 	</tr>
 	<tr>
 		<td>
@@ -159,9 +161,11 @@ In this section, we will show results obtained from each stage of our pipeline.
 	</tr>
 </table>
 
+
+
 ##### Initial Tesseract text block extraction (step 1)
 
-Some "good" text blocks from page 4 of slime:
+Some "good" text blocks from S4
 
 <table>
   <tr>
@@ -205,7 +209,7 @@ Some "good" text blocks from page 4 of slime:
   	</td>
   </tr>
 </table>
-Not all text blocks actually contains texts, here are all bad text blocks from slime page 4:
+Not all text blocks actually contains texts, here are all bad text blocks from S4
 
 <table>
   <tr>
@@ -219,11 +223,11 @@ Not all text blocks actually contains texts, here are all bad text blocks from s
   </tr>
 </table>
 
-**Todo: do the same for slime page 5**
+
 
 ##### Learned SIFT descriptor keypoints from text blocks (step 3)
 
-Here are some keypoint descriptors learned from the text blocks that serve as vocabulary (visualized using open cv)
+Here are some keypoint descriptors learned from the text blocks that serve as vocabulary (visualized using open cv). Results are quite similar so we are only showing the descriptors for S4.
 
 <table>
   <tr>
@@ -241,7 +245,6 @@ Here are some keypoint descriptors learned from the text blocks that serve as vo
   </tr>
 </table>
 
-**Todo: do the same for slime page 5**
 
 ##### Find good SIFT matches in input image and cluster using MeanShift (steps 4, 5, 6)
 
@@ -249,8 +252,8 @@ Red rectangles are sift mathces while green rectangles are match cluster centers
 
 <table>
 	<tr>
-		<th>Slime page 4 matches</th>
-		<th>Slime page 5 matches</th>
+		<th>S4 matches</th>
+		<th>S5 matches</th>
 	</tr>
 	<tr>
 		<td>
@@ -262,9 +265,11 @@ Red rectangles are sift mathces while green rectangles are match cluster centers
 	</tr>
 </table>
 
+
+
 ##### Extracted speech bubble masks (steps 7, 8, 9)
 
-Speech bubble masks extracted from slime page 4
+Speech bubble masks extracted from S4
 
 <table>
     <tr>
@@ -303,7 +308,7 @@ Speech bubble masks extracted from slime page 4
 	</tr>
 </table>
 
-Speech bubble masks extracted from slime page 5
+Speech bubble masks extracted from S5
 
 <table>
     <tr>
@@ -322,9 +327,10 @@ Speech bubble masks extracted from slime page 5
     </tr>
 </table>
 
+
 ##### Mask, crop, then detect text in speech bubbles (steps 10, 11, 12)
 
-Results from slime page 4
+Results from S4
 
 <table>
   <tr>
@@ -346,7 +352,7 @@ Results from slime page 4
   </tr>
 </table>
 
-Results from slime page 5
+Results from S5
 
 <table>
   <tr>
@@ -358,15 +364,16 @@ Results from slime page 5
   </tr>
 </table>
 
+
 ##### Final Results 
 
 Final results compared with baseline. Baseline is the text blocks detected by directly running Tesseract OCR on the input image.
 
-Slime page 4 side by side comparison:
+S4 side by side comparison with baseline
 
 <table>
   <tr>
-    <th>Baseline</th>
+    <th>Baseline (Tesseract Only)</th>
     <th>SIFT-OCR (Ours)</th>
   </tr>
   <tr>
@@ -379,11 +386,12 @@ Slime page 4 side by side comparison:
   </tr>
 </table>
 
-Slime page 5 side by side comparison:
+
+S5 side by side comparison with baseline
 
 <table>
   <tr>
-    <th>Baseline</th>
+    <th>Baseline (Tesseract Only)</th>
     <th>SIFT-OCR (Ours)</th>
   </tr>
 	<tr>
@@ -395,6 +403,7 @@ Slime page 5 side by side comparison:
 	</td>
   </tr>
 </table>
+
 
 
 #### Parameters
