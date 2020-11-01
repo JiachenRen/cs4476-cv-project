@@ -38,7 +38,7 @@ dataset and ground truth labelling for supervised machine learning tasks. This i
 caveats that come with intellectual property. As a result, most of the research done in this area either use self-collected datasets that
 are undisclosed or the [eDBtheque](http://ebdtheque.univ-lr.fr) dataset, a dataset of 100 pages with pixel-level ground truth labelling for panels.
 The results from these researches that employ custom designed deep neural nets either focus on specific tasks such as speech bubble localization
-of mangas in a specific language and genre (**Todo: references here**), or text bounding box extraction for mangas in a specific language (**Todo: references here**).
+of mangas in a specific language and genre ([Deep CNN-based Speech Balloon Detection and Segmentation for Comic Books](https://arxiv.org/pdf/1902.08137.pdf)), or text bounding box extraction for mangas in a specific language ([Japanese OCR](https://github.com/phamdinhthang/japanese_OCR)).
 The point is, none of these produce an end-to-end system with high level of performance.
 
 Our approach introduces several innovations in designing an end-to-end pipeline for automated manga translation. In tackling this
