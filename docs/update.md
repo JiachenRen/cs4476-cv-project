@@ -14,6 +14,8 @@ One or two sentences on the main result you obtained.
 Teaser figure that conveys the main idea behind the project or the main application being addressed.
 "
 
+![Flow Diagram](src/update/images/teaser_flow_diagram.svg)
+
 ### Introduction
 
 [//]: # "introduction.md"
@@ -48,8 +50,6 @@ Our approach introduces several innovations in designing an end-to-end pipeline 
 challenging problem, we combined traditional machine learning and computer vision algorithms with deep learning methods to achieve
 results far better than the baseline approach. Specifically, we come up with the **SIFT guided OCR** algorithm to extract text from
 manga speech bubbles. We show that our algorithm performs far better than the baseline in the industry with qualitative results.
-
-**Todo: Teaser Figure**
 
 ### Approach
 

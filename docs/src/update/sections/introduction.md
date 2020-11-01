@@ -29,5 +29,3 @@ Our approach introduces several innovations in designing an end-to-end pipeline 
 challenging problem, we combined traditional machine learning and computer vision algorithms with deep learning methods to achieve
 results far better than the baseline approach. Specifically, we come up with the **SIFT guided OCR** algorithm to extract text from
 manga speech bubbles. We show that our algorithm performs far better than the baseline in the industry with qualitative results.
-
-**Todo: Teaser Figure**
