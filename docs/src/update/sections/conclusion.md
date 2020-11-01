@@ -1,7 +1,3 @@
-[//]: # "
-Conclusion would likely make the same points as the abstract. Discuss any future ideas you have to make your approach better.
-"
-
 So far, we have demonstrated the outstanding performance of SIFT-OCR compared to the baseline method in the task of extracting
 text from manga speech bubbles. This is the most difficult hurdle to get over in our pipeline. It required huge amount of innovation
 and effort from our team. That said, the algorithm is not without its defects - it has many tunable parameters, the effects of some
