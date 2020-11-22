@@ -67,40 +67,7 @@ def test_iterative_ocr():
 
 def test_sift_ocr():
     np_image, pil_image = load_test_image()
-    blocks = sift_ocr(pil_image, parser=TextBlockInfoParser())
-
-    # Group colors
-    colors = [
-        (255, 0, 0),
-        (0, 255, 0),
-        (0, 0, 255),
-        (255, 255, 0),
-        (100, 0, 255),
-        (200, 255, 0),
-        (200, 0, 255),
-        (0, 255, 255),
-        (255, 0, 255),
-        (255, 100, 0),
-        (0, 255, 100),
-        (100, 255, 0),
-        (0, 100, 255),
-        (255, 0, 100),
-        (255, 200, 0),
-        (255, 0, 200),
-        (0, 200, 255),
-        (0, 255, 200)
-    ]
-    random.shuffle(colors)
-
-    # Save results from iterative ocr to gen/image_ocr_baseline.png
-    iterative_results = draw_blocks_on_image(pil_image, blocks[0])
-    iterative_results.save('../gen/sift_ocr/ocr_result_iterative.png')
-
-    # Save grouped results
-    grp_results_img = pil_image.copy()
-    for grp in range(1, len(blocks)):
-        grp_results_img = draw_blocks_on_image(grp_results_img, blocks[grp], fill=colors[grp])
-    grp_results_img.save('../gen/sift_ocr/ocr_result_grouped.png')
+    sift_ocr(pil_image, parser=TextBlockInfoParser())
 
 
 if __name__ == '__main__':

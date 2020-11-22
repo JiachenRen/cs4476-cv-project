@@ -2,10 +2,11 @@ from PIL import Image, ImageDraw
 from src.ocr.Rect import Rect
 from src.ocr.iterative_ocr import iterative_ocr
 from src.ocr.TextBlockInfo import TextBlockInfo, TextBlockInfoParser
-from src.ocr.utils import draw_blocks_on_image
+from src.ocr.utils import draw_blocks_on_image, find_dominant_colors, sift_group_colors
 from typing import List, Tuple, Dict
 from sklearn.cluster import MeanShift, KMeans
 from collections import Counter
+import random
 import os
 import os.path as p
 import shutil as sh
@@ -181,15 +182,8 @@ Sift OCR
         mask_rect = Rect(x - w / 2, y - h / 2, w, h)
 
         # Separate pixels under mask to 2 colors, and choose the dominant one to apply under mask
-        colors = KMeans(n_clusters=5)
-        # noinspection PyTypeChecker
-        pixels_under_mask = np.array(flood_image.crop(mask_rect.box())).reshape((-1, 3))
-        colors.fit(pixels_under_mask)
-        pixel_labels = colors.predict(pixels_under_mask)
-        pixel_label_counter = Counter(pixel_labels)
-        dominant_color_idx = pixel_label_counter.most_common(1)[0][0]
-        dominant_color = (round(x) for x in colors.cluster_centers_[dominant_color_idx])
-        draw.rectangle(mask_rect.corners(), fill=tuple(dominant_color))
+        dominant_color = find_dominant_colors(flood_image, mask_rect, 1, 5)[0]
+        draw.rectangle(mask_rect.corners(), fill=dominant_color)
         # noinspection PyTypeChecker
         flood_image = np.array(flood_image)
         flood_mask = np.zeros((flood_image.shape[0] + 2, flood_image.shape[1] + 2), np.uint8)
@@ -231,6 +225,19 @@ Sift OCR
         if len(new_blocks) > 0:
             grouped_blocks[groups] = new_blocks
             groups += 1
+
+    # Save results from iterative ocr to gen/image_ocr_baseline.png
+    random.shuffle(sift_group_colors)
+    iter_image = image.copy()
+    iterative_results = draw_blocks_on_image(iter_image, grouped_blocks[0])
+    iterative_results.save(f'{sift_ocr_path}/ocr_result_iterative.png')
+
+    # Save grouped results
+    grp_results_img = image.copy()
+    for grp in range(1, len(grouped_blocks)):
+        grp_results_img = draw_blocks_on_image(grp_results_img, grouped_blocks[grp], fill=sift_group_colors[grp])
+    grp_results_img.save(f'{sift_ocr_path}/ocr_result_grouped.png')
+
     return grouped_blocks
 
 

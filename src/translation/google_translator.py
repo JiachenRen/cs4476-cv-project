@@ -15,7 +15,7 @@ class ClientType(Enum):
 class Translation:
     def __init__(self, source, translated, src_lang, dest_lang):
         self.source = source
-        self.translated = translated
+        self.translated: str = translated
         self.src_lang = src_lang
         self.dest_lang = dest_lang
 

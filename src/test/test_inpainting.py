@@ -10,7 +10,7 @@ import imageio
 from src.translation.google_translator import GoogleTranslator, ClientType
 
 
-def test_pipeline(image_uri: str, working_dir='../gen'):
+def test_inpainting(image_uri: str, working_dir='../gen'):
     np_image = imageio.imread(image_uri)
     np_image = preprocess(np_image)
     parser = TextBlockInfoParser()
@@ -31,14 +31,11 @@ def test_pipeline(image_uri: str, working_dir='../gen'):
     with open(p.join(working_dir, 'sentences.txt'), 'w') as file:
         file.write(combined_texts)
 
-    translator = GoogleTranslator(client_type=ClientType.siteGT)
-    translation = translator.translate(combined_texts)
+    # Skip google translate, just read from disk
     print('\n----------------- Translation ------------------')
-    print(translation.translated)
-    # Save translated text
-    with open(p.join(working_dir, 'translated.txt'), 'w') as file:
-        file.write(translation.translated)
-    translations = translation.translated.split('\n')
+    translations = open(p.join(working_dir, 'translated.txt')).read().split('\n')
+    for line in translations:
+        print(line)
 
     # In-painting
     print('\n----------------- In-painting ------------------')
@@ -54,4 +51,4 @@ def test_pipeline(image_uri: str, working_dir='../gen'):
 
 
 if __name__ == '__main__':
-    test_pipeline('../data/indonesian/sektekomik.com/slime/4.png')
+    test_inpainting('../data/indonesian/sektekomik.com/slime/4.png')
