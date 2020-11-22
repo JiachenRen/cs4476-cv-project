@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 1024 400" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(3.20013,0,0,1.03284,-461.513,12.483)">
+        <path d="M199.091,276.859L199.091,272.921L280.88,272.921L279.7,269.264L281.516,269.264L283.331,274.89L281.516,280.516L279.7,280.516L280.88,276.859L199.091,276.859Z"/>
+    </g>
+    <g transform="matrix(3.20013,0,0,1.03284,-58.3,10.4928)">
+        <path d="M199.091,276.859L199.091,272.921L280.88,272.921L279.7,269.264L281.516,269.264L283.331,274.89L281.516,280.516L279.7,280.516L280.88,276.859L199.091,276.859Z"/>
+    </g>
+    <g transform="matrix(7.44201e-17,-1.62966,1.03284,5.99932e-17,26.4765,595.246)">
+        <path d="M203.904,276.859L206.222,280.516L202.656,280.516L199.091,274.89L202.656,269.264L206.222,269.264L203.904,272.921L283.331,272.921L283.331,276.859L203.904,276.859Z"/>
+    </g>
+    <g transform="matrix(-2.41736,1.3681e-15,-5.76174e-16,-1.03284,995.307,419.464)">
+        <rect x="199.091" y="272.921" width="84.241" height="3.938"/>
+    </g>
+    <g transform="matrix(9.83094e-17,-1.60551,1.03284,6.32432e-17,228.083,590.44)">
+        <rect x="199.091" y="272.921" width="84.241" height="3.938"/>
+    </g>
+    <g transform="matrix(1.40363,0,0,1.40363,-76.4864,169.208)">
+        <rect x="84.393" y="72.376" width="95.204" height="33.645" style="fill:rgb(235,235,235);"/>
+        <g transform="matrix(1,0,0,1,-11.004,1.21404)">
+            <text x="111.001px" y="91.016px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:12px;">Input Image</text>
+        </g>
+    </g>
+    <g transform="matrix(1.40363,0,0,1.40363,125.12,169.208)">
+        <rect x="84.393" y="72.376" width="95.204" height="33.645" style="fill:rgb(235,235,235);"/>
+        <g transform="matrix(1,0,0,1,-19.7462,2.41139)">
+            <text x="111.001px" y="91.016px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:12px;">T<tspan x="117.001px 123.675px " y="91.016px 91.016px ">es</tspan>seract OCR</text>
+        </g>
+    </g>
+    <g transform="matrix(1.40363,0,0,1.40363,199.224,-4.31605)">
+        <text x="111.001px" y="91.016px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:12px;">Iterative OCR</text>
+    </g>
+    <g transform="matrix(1.40363,0,0,1.40363,326.727,169.208)">
+        <rect x="84.393" y="72.376" width="95.204" height="33.645" style="fill:rgb(235,235,235);"/>
+        <g transform="matrix(1,0,0,1,-9.25791,2.40643)">
+            <text x="111.001px" y="91.016px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:12px;">T<tspan x="117.001px 123.675px " y="91.016px 91.016px ">ex</tspan>t Blocks</text>
+        </g>
+    </g>
+    <g transform="matrix(1.40363,0,0,1.40363,528.333,169.208)">
+        <rect x="84.393" y="72.376" width="95.204" height="33.645" style="fill:rgb(235,235,235);"/>
+        <g transform="matrix(1,0,0,1,-7.08995,2.47967)">
+            <text x="111.001px" y="91.016px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:12px;">SIFT<tspan x="136.783px 140.117px " y="91.016px 91.016px "> O</tspan>CR</text>
+        </g>
+    </g>
+    <g transform="matrix(1.40363,0,0,1.40363,729.94,169.208)">
+        <rect x="84.393" y="72.376" width="95.204" height="33.645" style="fill:rgb(235,235,235);"/>
+        <g transform="matrix(1,0,0,1,-15.1935,1.3576)">
+            <text x="111.001px" y="91.016px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:12px;">Grouped <tspan x="160.818px 166.818px 173.492px " y="91.016px 91.016px 91.016px ">Tex</tspan>t</text>
+        </g>
+    </g>
+    <g transform="matrix(1.40363,0,0,1.40363,326.727,77.9704)">
+        <rect x="84.393" y="72.376" width="95.204" height="33.645" style="fill:rgb(235,235,235);"/>
+        <g transform="matrix(1,0,0,1,-11.88,1.21404)">
+            <text x="111.001px" y="91.016px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:12px;">Mask Image</text>
+        </g>
+    </g>
+</svg>

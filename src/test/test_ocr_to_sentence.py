@@ -3,6 +3,8 @@ from src.ocr.utils import preprocess
 from PIL import Image
 from src.ocr.TextBlockInfo import TextBlockInfoParser, TextBlockInfo
 from typing import List, Dict
+from sklearn.cluster import MeanShift
+import numpy as np
 import imageio
 
 
@@ -15,9 +17,10 @@ def test_ocr_to_sentence():
     sentences = []
     for grp in range(1, len(blocks_dict)):
         blocks = blocks_dict[grp]
-        # Todo: mean-shift cluster TextBlockInfo.bounds by its y coordinate first
-        #  (with a window size of around 5 pixels)
-        blocks.sort(key=lambda x: (x.bounds.origin()[1], x.bounds.origin()[0]))
+        model = MeanShift(bandwidth=5)
+        model.fit(np.array([x.bounds.y for x in blocks]).reshape(-1, 1))
+        centers = model.cluster_centers_
+        blocks.sort(key=lambda x: (centers[model.predict([[x.bounds.y]])[0]][0], x.bounds.x))
         words = [x.text for x in blocks]
         separator = ' '
         sent = separator.join(words).lower()
