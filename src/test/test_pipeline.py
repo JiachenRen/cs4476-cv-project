@@ -54,4 +54,4 @@ def test_pipeline(image_uri: str, working_dir='../gen'):
 
 
 if __name__ == '__main__':
-    test_pipeline('../data/indonesian/sektekomik.com/slime/4.png')
+    test_pipeline('../data/indonesian/sektekomik.com/slime/5.png')

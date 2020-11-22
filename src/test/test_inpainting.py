@@ -7,15 +7,13 @@ from typing import List, Dict
 import os.path as p
 import imageio
 
-from src.translation.google_translator import GoogleTranslator, ClientType
-
 
 def test_inpainting(image_uri: str, working_dir='../gen'):
     np_image = imageio.imread(image_uri)
     np_image = preprocess(np_image)
     parser = TextBlockInfoParser()
     print('-------------------- SIFT OCR -------------------')
-    blocks_dict: Dict[int: List[TextBlockInfo]] = sift_ocr(Image.fromarray(np_image), parser)
+    blocks_dict: Dict[int: List[TextBlockInfo]] = sift_ocr(Image.fromarray(np_image), parser, min_cluster_label_count=1)
 
     # Convert blocks to texts and lines.
     print('\n------------ Reconstruct Sentences -------------')
@@ -51,4 +49,4 @@ def test_inpainting(image_uri: str, working_dir='../gen'):
 
 
 if __name__ == '__main__':
-    test_inpainting('../data/indonesian/sektekomik.com/slime/4.png')
+    test_inpainting('../data/indonesian/sektekomik.com/slime/8.png')
