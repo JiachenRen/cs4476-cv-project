@@ -26,4 +26,5 @@ very easily scales to longer pages, achieving equal performance. More qualitativ
 
 Our results are shown as above. Notice that our algorithm detects font size, line spacing, and bounding box from text blocks and uses this information to adaptively paint new text over the original image. Of course, the algorithm is still prone to error - while the first two examples demonstrates stellar performance, the third example shows a miscalculation of bounding rect due to noises in text blocks (in the lower left panel), resulting in malformatted text. 
 
-Note that we also wrote a simple algorithm to detect foreground and background color automatically from the original image. These colors are used for the mask used to cover original  later to ensure stylistic consistency. 
+Note that we also wrote a simple algorithm to detect foreground and background color automatically from the original image. These colors to ensure stylistic consistency. 
+
