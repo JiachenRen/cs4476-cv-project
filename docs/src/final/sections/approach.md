@@ -62,4 +62,6 @@ Next, we use Google Translate to translate the obtained sentences in the source 
 
 Finally, for each grouped text blocks, we calculate various parameters related to painting the translated text back onto the original image. These parameters include font size, line spacing, color, and warp-around parameters. Drawing text over image is done using `PIL` package. For more details, refer to [inpainting.py](https://github.com/JiachenRen/cs4476-cv-project/blob/master/src/inpainting.py). Detailed documentations are provided there.
 
+The pipeline runner can be found at [test_pipeline.py](https://github.com/JiachenRen/cs4476-cv-project/blob/master/src/test/test_pipeline.py)
+
 In the next section, we will present qualitative results from each stage of our proposed pipeline and compare final results with baseline results.
