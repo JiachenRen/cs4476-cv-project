@@ -103,8 +103,17 @@ Intuitively, since we know that SIFT is good at finding places that are similar 
 combines the advantages of SIFT and Tesseract OCR. Essentially, we first use Tesseract OCR to establish some ground truth of what text should
 look like in this particular manga page. Then, using SIFT, we find all places where text might be in the page (what Tesseract OCR is not made to do).
 Then, using this info, we can "de-noise" the input and guide Tesseract to work on speech bubbles only. Since text in speech bubbles appear as structured documents,
-Tesseract achieves far better results than the baseline. In the next section, we will present qualitative results from each stage of our proposed pipeline and compare
-final results with baseline results.
+Tesseract achieves far better results than the baseline.
+
+#### Translation & In-painting
+
+To reconstruct sentences from each group of text blocks, first a `MeanShift` clustering with window size of `5` is done on the y coordinates of the corresponding bounding boxes to detect lines, then the text blocks are sorted first by their y coordinate (rounded to the nearest cluster center) and then by their x coordinate. 
+
+Next, we use Google Translate to translate the obtained sentences in the source language. There's not much to talk about here except that we combine everything extracted from a manga page into a single document and use that as the query to the Google Translate API, which minimizes asynchronous network operations. For our implementation (ported from dart language), refer to [google_translate.py](src/translation/google_translate.py) and [google_token_generator.py](src/translation/google_token_generator.py).
+
+Finally, for each grouped text blocks, we calculate various parameters related to painting the translated text back onto the original image. These parameters include font size, line spacing, color, and warp-around parameters. Drawing text over image is done using `PIL` package. For more details, refer to [inpainting.md](src/inpainting.py). Detailed documentations are provided there.
+
+In the next section, we will present qualitative results from each stage of our proposed pipeline and compare final results with baseline results.
 
 ### Experiments and Results
 
@@ -460,7 +469,9 @@ very easily scales to longer pages, achieving equal performance. More qualitativ
 - [Slime Page 5](src/final/images/ocr_results/slime_page_5/README.md) (Old)
 - [Slime Page 8](src/final/images/ocr_results/demon_king_page_2/README.md)
 
-##### Pipeline Results
+#### Pipeline Results
+
+The images below are obtained by running the input image through our pipeline in an end-to-end manner. Left is the original image while right is the original image with translated text painted in with stylistic consistency in mind (stylistic consistency is ensured by our algorithm, as it discovers optimum painting parameters using various aspects of the data extracted from previous steps).
 
 | Original      | Translated |
 | ------------- | ---------- |
@@ -474,17 +485,19 @@ very easily scales to longer pages, achieving equal performance. More qualitativ
 | ------------- | ---------- |
 | ![Original](src/final/images/ocr_results/slime_page_8/input_image.png) | ![Translated](src/final/images/final_results/slime_page_8/final_result.png)            |
 
-Our results are shown as above. Notice that our algorithm detects font size, line spacing, and bounding box from text blocks and uses this information to adaptively paint new text over the original image. Of course, the algorithm is still prone to error - while the first two examples demonstrates stellar performance, the third example shows a miscalculation of bounding rect due to noises in text blocks (in the lower left panel), resulting in malformatted text. 
+Notice that our algorithm detects font size, line spacing, and bounding box from text blocks and uses this information to adaptively paint new text over the original image. Of course, the algorithm is still prone to error - while the first two examples demonstrates stellar performance, the third example shows a miscalculation of bounding rect due to noises in text blocks (in the lower left panel), resulting in malformatted text. 
 
-Note that we also wrote a simple algorithm to detect foreground and background color automatically from the original image. These colors to ensure stylistic consistency. 
+Note that we also wrote a simple algorithm to detect foreground and background color automatically from the original image. These colors are used to ensure stylistic consistency. 
 
 
 
 ### Conclusion
 
 [//]: # "conclusion.md"
-Manga is a hobby that many people around the world indulged in to relax, like watching a movie or reading a book. One major problem with the increased availability of online manga is that if a person does not understand the original language that the manga was first written in, it may take awhile for translators to interpret the language to English. This motivated us to design a system - called the SIFT-OCR manga translation system - that solves this problem using programming instead of relying on manga translators. So far, we have demonstrated the outstanding performance of SIFT-OCR compared to the baseline method in the task of extracting text from manga speech bubbles. This is the most difficult hurdle to get over in our pipeline. It required huge amount of innovation and effort from our team. That said, the algorithm is not without its defects - it has many tunable parameters, the effects of some are not fully understood. In addition, there are many other tasks down the pipeline, including stitching sentences together from
-detected text blocks, machine translation, and hypothesizing new bounding boxes for embedding the translated text. No matter how well an automated system performs, mistakes are inevitable - to make our system production ready, we'll also need to add UI for humans to optionally step in at every stage of the pipeline. We'll choose some of the tasks listed above to complete in the future.
+Manga is a hobby that many people around the world indulged in to relax, like watching a movie or reading a book. One major problem with the increased availability of online manga is that if a person does not understand the original language that the manga was first written in, it may take awhile for translators to interpret the language to English. This motivated us to design a system - called the SIFT-OCR manga translation system - that solves this problem using programming instead of relying on manga translators. So far, we have demonstrated the outstanding performance of SIFT-OCR compared to the baseline method in the task of extracting text from manga speech bubbles. This is the most difficult hurdle to get over in our pipeline. It required huge amount of innovation and effort from our team. That said, the algorithm is not without its defects - it has many tunable parameters, the effects of some are not fully understood. No matter how well an automated system performs, mistakes are inevitable - to make our system production ready, we'll also need to add UI for humans to optionally step in at every stage of the pipeline. 
+
+In addition to detecting and grouping word-level text blocks, which was completed earlier, we were able to complete everything described in our original proposal and produced a working end-to-end pipelined system. The pipeline can now reconstruct original sentences back by analyzing the bounding rectangles of the text blocks, use google translate to translate from source language to target language, and finally, upon analyzing text bounding boxes for line spacing, font-size, background color, foreground color, and other related attributes, repaint the translated text over the original manga page in a stylistically consistent manner. 
+
 
 
 ### References

@@ -52,5 +52,14 @@ Intuitively, since we know that SIFT is good at finding places that are similar 
 combines the advantages of SIFT and Tesseract OCR. Essentially, we first use Tesseract OCR to establish some ground truth of what text should
 look like in this particular manga page. Then, using SIFT, we find all places where text might be in the page (what Tesseract OCR is not made to do).
 Then, using this info, we can "de-noise" the input and guide Tesseract to work on speech bubbles only. Since text in speech bubbles appear as structured documents,
-Tesseract achieves far better results than the baseline. In the next section, we will present qualitative results from each stage of our proposed pipeline and compare
-final results with baseline results.
+Tesseract achieves far better results than the baseline.
+
+#### Translation & In-painting
+
+To reconstruct sentences from each group of text blocks, first a `MeanShift` clustering with window size of `5` is done on the y coordinates of the corresponding bounding boxes to detect lines, then the text blocks are sorted first by their y coordinate (rounded to the nearest cluster center) and then by their x coordinate. 
+
+Next, we use Google Translate to translate the obtained sentences in the source language. There's not much to talk about here except that we combine everything extracted from a manga page into a single document and use that as the query to the Google Translate API, which minimizes asynchronous network operations. For our implementation (ported from dart language), refer to [google_translate.py](src/translation/google_translate.py) and [google_token_generator.py](src/translation/google_token_generator.py).
+
+Finally, for each grouped text blocks, we calculate various parameters related to painting the translated text back onto the original image. These parameters include font size, line spacing, color, and warp-around parameters. Drawing text over image is done using `PIL` package. For more details, refer to [inpainting.md](src/inpainting.py). Detailed documentations are provided there.
+
+In the next section, we will present qualitative results from each stage of our proposed pipeline and compare final results with baseline results.
